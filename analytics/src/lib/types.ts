@@ -74,14 +74,21 @@ export interface FeedbackData {
 }
 
 /* ── Promociones ── */
+// Alimentado por las APIs de analytics de Promotions (/api/admin/promociones/count
+// y /api/historial[/count]): counts por estado y agregados de uso del rango.
 export interface PromocionesData {
   ok: boolean;
-  activas: number | null;
-  usos: number | null;
-  volumenDescuento: number | null; // suma de (valorOriginal - valorPagado) en el rango
+  vigentes: number | null;
+  programadas: number | null;
+  vencidas: number | null;
+  eliminadas: number | null;
+  usos: number | null;            // historial/count.totalUsos (en el rango)
+  ahorroTotal: number | null;     // historial/count.ahorroTotal
+  valorOriginal: number | null;   // historial/count.sumaValorOriginal
+  valorPagado: number | null;     // historial/count.sumaValorPagado
   usosTruncated: boolean;
-  porCategoria: { categoria: string; cantidad: number }[];
-  topPromos: { nombre: string; usos: number; descuento: number }[];
+  porEstado: { estado: string; cantidad: number }[];
+  topPromos: { nombre: string; usos: number }[];
 }
 
 /* ── Overview consolidado ── */

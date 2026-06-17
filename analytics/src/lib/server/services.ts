@@ -8,7 +8,7 @@
 import { ENV, configured, raHeaders, drHeaders, pmHeaders, fbAnalyticsHeaders, promoHeaders } from './config';
 import { safeFetch, paginate } from './fetchers';
 import { CACHE_TAGS, CACHE_TTL } from './cache';
-import { sumAmounts, toCents, centsToNumber } from '@/lib/money';
+import { sumAmounts } from '@/lib/money';
 import { weightedAverage } from '@/lib/utils';
 import { periodDays } from '@/lib/period';
 import type { PaymentsData, DriverData, RiderAppData, FeedbackData, PromocionesData, OverviewData } from '@/lib/types';
@@ -30,23 +30,6 @@ function rec(v: unknown): Record<string, number> | null {
   }
   return null;
 }
-// YYYY-MM-DD inclusivo: compara solo la parte de fecha del ISO.
-function inRange(iso: unknown, from: string, to: string): boolean {
-  if (!iso || typeof iso !== 'string') return false;
-  const ymd = iso.slice(0, 10);
-  return ymd >= from && ymd <= to;
-}
-// `categorias` de una promo puede llegar como array o como string separado por
-// comas (según la API). Normaliza siempre a string[] sin vacíos.
-function normalizeCategorias(raw: unknown): string[] {
-  const list = Array.isArray(raw)
-    ? raw
-    : typeof raw === 'string'
-      ? raw.split(',')
-      : [];
-  return list.map((c) => String(c).trim()).filter(Boolean);
-}
-
 /* ── Payments ── */
 // Consume las APIs de analytics de Payments (/api/analytics/*): KPIs del mes,
 // breakdown por estado, liquidaciones/retiros y serie diaria de GMV. Todos los
@@ -243,109 +226,76 @@ export async function getFeedback(month: string): Promise<FeedbackData> {
   };
 }
 
-/* ── Service types (DriverApp) ── */
-// Mapa id→nombre de los tipos de servicio. Las categorías de las promociones se
-// guardan como IDs de service-type; este mapa permite mostrar el nombre legible.
-// Tolerante a fallos: si DriverApp no está configurado o falla, devuelve {}.
-export async function getServiceTypes(): Promise<Record<string, string>> {
-  const base = ENV.driver.base;
-  if (!configured(base)) return {};
-
-  const page = await paginate<Record<string, unknown>>({
-    buildUrl: (p) => `${base}/api/control-plane/service-types?limit=100&page=${p}`,
-    headers: drHeaders(),
-    tags: [CACHE_TAGS.driver],
-    ttl: CACHE_TTL.service,
-    extractItems: (j) => ((j as Record<string, unknown>)?.data as Record<string, unknown>[]) || [],
-    extractTotalPages: (j) => num(((j as Record<string, unknown>)?.pagination as Record<string, unknown>)?.totalPages) || 1,
-  });
-
-  const map: Record<string, string> = {};
-  for (const s of page.items) {
-    const id = s.id as string;
-    const nombre = s.nombre as string;
-    if (id && nombre) map[id] = nombre;
-  }
-  return map;
-}
-
 /* ── Promociones ── */
 export async function getPromociones(from: string, to: string): Promise<PromocionesData> {
   const base = ENV.promociones.base;
   const empty: PromocionesData = {
-    ok: false, activas: null, usos: null, volumenDescuento: null,
-    usosTruncated: false, porCategoria: [], topPromos: [],
+    ok: false, vigentes: null, programadas: null, vencidas: null, eliminadas: null,
+    usos: null, ahorroTotal: null, valorOriginal: null, valorPagado: null,
+    usosTruncated: false, porEstado: [], topPromos: [],
   };
   if (!configured(base)) return empty;
 
   const tags = [CACHE_TAGS.promociones];
   const h = promoHeaders();
+  const countUrl = (estado: string) => `${base}/api/admin/promociones/count?estado=${estado}`;
+  const cantidad = (j: Record<string, unknown> | null) =>
+    num((j?.data as Record<string, unknown>)?.cantidad);
 
-  // Lista de promociones activas (paginada) + nombres de tipos de servicio
-  // (DriverApp), para tally por categoría con etiquetas legibles.
-  const [promoPage, serviceTypes] = await Promise.all([
+  const [vig, prog, venc, elim, histCount, histPage] = await Promise.all([
+    safeFetch<Record<string, unknown>>(countUrl('vigentes'), h, tags, CACHE_TTL.service),
+    safeFetch<Record<string, unknown>>(countUrl('programadas'), h, tags, CACHE_TTL.service),
+    safeFetch<Record<string, unknown>>(countUrl('vencidas'), h, tags, CACHE_TTL.service),
+    safeFetch<Record<string, unknown>>(countUrl('eliminadas'), h, tags, CACHE_TTL.service),
+    safeFetch<Record<string, unknown>>(`${base}/api/historial/count?desde=${from}&hasta=${to}`, h, tags, CACHE_TTL.service),
+    // Historial paginado (filtrado por rango en el server) → top promociones por usos.
     paginate<Record<string, unknown>>({
-      buildUrl: (page) => `${base}/api/admin/promociones?eliminada=false&limit=100&page=${page}`,
+      buildUrl: (page) => `${base}/api/historial?desde=${from}&hasta=${to}&limit=100&page=${page}`,
       headers: h,
       tags,
       ttl: CACHE_TTL.service,
       extractItems: (j) => ((j as Record<string, unknown>)?.data as Record<string, unknown>[]) || [],
       extractTotalPages: (j) => num(((j as Record<string, unknown>)?.pagination as Record<string, unknown>)?.totalPages) || 1,
     }),
-    getServiceTypes(),
   ]);
 
-  // Resuelve el ID de categoría a su nombre (DriverApp); si no es un ID conocido
-  // (p.ej. "sin categoría"), conserva la etiqueta original. `categorias` puede
-  // venir como array o como string separado por comas → se normaliza a string[].
-  const catCount = new Map<string, number>();
-  for (const p of promoPage.items) {
-    const cats = normalizeCategorias(p.categorias);
-    const labels = cats.length === 0 ? ['sin categoría'] : cats.map((c) => serviceTypes[c] ?? c);
-    for (const l of labels) catCount.set(l, (catCount.get(l) || 0) + 1);
-  }
-  const porCategoria = [...catCount.entries()]
-    .map(([categoria, cantidad]) => ({ categoria, cantidad }))
-    .sort((a, b) => b.cantidad - a.cantidad);
+  const vigentes = cantidad(vig);
+  const programadas = cantidad(prog);
+  const vencidas = cantidad(venc);
+  const eliminadas = cantidad(elim);
 
-  // Historial de uso (paginado) → filtrar por fechaUso en el rango, sumar descuento.
-  const histPage = await paginate<Record<string, unknown>>({
-    buildUrl: (page) => `${base}/api/historial?limit=100&page=${page}`,
-    headers: h,
-    tags,
-    ttl: CACHE_TTL.service,
-    extractItems: (j) => ((j as Record<string, unknown>)?.data as Record<string, unknown>[]) || [],
-    extractTotalPages: (j) => num(((j as Record<string, unknown>)?.pagination as Record<string, unknown>)?.totalPages) || 1,
-  });
+  const aggr = (histCount?.data as Record<string, unknown>) || null;
 
-  const usosEnRango = histPage.items.filter((u) => inRange(u.fechaUso, from, to));
-  const descuentoCents = usosEnRango.reduce((acc, u) => {
-    const orig = toCents(u.valorOriginal as number);
-    const pagado = toCents(u.valorPagado as number);
-    return acc + Math.max(0, orig - pagado);
-  }, 0);
-
-  // Top promociones por usos (dentro del rango).
-  const byPromo = new Map<string, { usos: number; descuentoCents: number }>();
-  for (const u of usosEnRango) {
-    const nombre = (u.nombre as string) || `promo ${u.promocionId}`;
-    const cur = byPromo.get(nombre) || { usos: 0, descuentoCents: 0 };
-    cur.usos += 1;
-    cur.descuentoCents += Math.max(0, toCents(u.valorOriginal as number) - toCents(u.valorPagado as number));
-    byPromo.set(nombre, cur);
+  // Top promociones por usos en el rango (agrupando el historial paginado).
+  const byPromo = new Map<string, number>();
+  for (const u of histPage.items) {
+    const promo = (u.promocion as Record<string, unknown>) || {};
+    const nombre = (promo.nombre as string) || (u.nombre as string) || `promo ${u.promocionId}`;
+    byPromo.set(nombre, (byPromo.get(nombre) || 0) + 1);
   }
   const topPromos = [...byPromo.entries()]
-    .map(([nombre, v]) => ({ nombre, usos: v.usos, descuento: centsToNumber(v.descuentoCents) }))
+    .map(([nombre, usos]) => ({ nombre, usos }))
     .sort((a, b) => b.usos - a.usos)
     .slice(0, 8);
 
+  const porEstado = [
+    { estado: 'Vigentes', cantidad: vigentes ?? 0 },
+    { estado: 'Programadas', cantidad: programadas ?? 0 },
+    { estado: 'Vencidas', cantidad: vencidas ?? 0 },
+  ];
+
   return {
-    ok: promoPage.totalPages > 0 || histPage.totalPages > 0,
-    activas: promoPage.items.length,
-    usos: usosEnRango.length,
-    volumenDescuento: centsToNumber(descuentoCents),
+    ok: vig != null || prog != null || venc != null || elim != null || histCount != null,
+    vigentes,
+    programadas,
+    vencidas,
+    eliminadas,
+    usos: num(aggr?.totalUsos),
+    ahorroTotal: num(aggr?.ahorroTotal),
+    valorOriginal: num(aggr?.sumaValorOriginal),
+    valorPagado: num(aggr?.sumaValorPagado),
     usosTruncated: histPage.truncated,
-    porCategoria,
+    porEstado,
     topPromos,
   };
 }
@@ -380,7 +330,7 @@ export async function getOverview(from: string, to: string, month: string): Prom
       usuariosActivos: sumNullable([riderapp.clientes, driver.workers?.total]),
       pedidosCompletados: sumNullable([driver.jobsFinalizados, riderapp.viajesConcluidos]),
       calificacionPromedio: feedback.calificacionPromedio ?? riderapp.calificacionPromedio,
-      promocionesActivas: promociones.activas,
+      promocionesActivas: promociones.vigentes,
     },
     revenueSeries: payments.revenueSeries,
     transactionsByStatus: payments.transactionsByStatus,
@@ -390,7 +340,7 @@ export async function getOverview(from: string, to: string, month: string): Prom
       driver: { ok: driver.ok, workersOnline: driver.workers?.online ?? null, jobsActivos: driver.jobs?.activos ?? null },
       payments: { ok: payments.ok, transacciones, ingresos: payments.gmv },
       feedback: { ok: feedback.ok, reviews: feedback.reviewsDelMes, reportes: feedback.reportesDelMes },
-      promociones: { ok: promociones.ok, activas: promociones.activas, usos: promociones.usos },
+      promociones: { ok: promociones.ok, activas: promociones.vigentes, usos: promociones.usos },
     },
   };
 }

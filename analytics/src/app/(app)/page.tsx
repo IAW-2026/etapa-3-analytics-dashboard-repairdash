@@ -58,10 +58,8 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
       </div>
 
       {/* Charts */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16 }}>
-        <div style={{ gridColumn: '1 / -1' }}>
-          <LineChartCard title="Ingresos por día" data={revenueSeries} format="money" color="var(--ok)" />
-        </div>
+      <LineChartCard title="Ingresos por día" data={revenueSeries} format="money" color="var(--ok)" />
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.7fr) minmax(0, 1fr)', gap: 16 }}>
         <BarChartCard title="Transacciones por estado" data={txBars} color="var(--mag)" />
         <DonutChartCard title="Distribución de calificaciones" data={ratingDonut} />
       </div>
