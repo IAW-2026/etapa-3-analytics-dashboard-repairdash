@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    height: 100%;
+  }
+
+  * { box-sizing: border-box; }
+
+  input, select, button, textarea { font-family: inherit; }
+
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-thumb { background: rgba(140,120,180,.28); border-radius: 99px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+}
+
+/* ── Fonts (self-hosted Jakarta + system monospace, no Google Fonts) ── */
+:root {
+  --font-grotesk: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+  --font-instrument: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+}
+
+/* ── Design tokens dark (default) ── */
+:root {
+  --bg: #0D0913;
+  --surface: #151020;
+  --surface2: #1E1730;
+  --surface3: #261D3C;
+  --border: #2A2142;
+  --border2: #382C56;
+  --text: #F3EEFA;
+  --text2: #AC9FC6;
+  --text3: #7B6E97;
+  --violet: #9D6BFF;
+  --violet-soft: rgba(157,107,255,.15);
+  --pink: #F26BB8;
+  --pink-soft: rgba(242,107,184,.14);
+  --mag: #C964E0;
+  --mag-soft: rgba(201,100,224,.14);
+  --ok: #52C98E;
+  --ok-soft: rgba(82,201,142,.13);
+  --warn: #E0A94E;
+  --warn-soft: rgba(224,169,78,.14);
+  --danger: #EF6470;
+  --danger-soft: rgba(239,100,112,.13);
+  --mut: #8E84A6;
+  --mut-soft: rgba(142,132,166,.14);
+  --shadow: 0 18px 44px rgba(8,4,18,.55);
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #F7F4FB;
+  --surface: #FFFFFF;
+  --surface2: #F2EDF9;
+  --surface3: #EAE2F5;
+  --border: #E5DDF1;
+  --border2: #D4C7EA;
+  --text: #1B1226;
+  --text2: #5C5174;
+  --text3: #8C81A4;
+  --violet: #7240E8;
+  --violet-soft: rgba(114,64,232,.10);
+  --pink: #D9438F;
+  --pink-soft: rgba(217,67,143,.10);
+  --mag: #A93BBE;
+  --mag-soft: rgba(169,59,190,.10);
+  --ok: #1F9D63;
+  --ok-soft: rgba(31,157,99,.10);
+  --warn: #A56F12;
+  --warn-soft: rgba(176,120,24,.12);
+  --danger: #D2424E;
+  --danger-soft: rgba(210,66,78,.10);
+  --mut: #7C7194;
+  --mut-soft: rgba(124,113,148,.12);
+  --shadow: 0 18px 44px rgba(60,40,100,.14);
+  color-scheme: light;
+}
+
+/* ── Reusable classes ── */
+.btn-primary {
+  border: none; border-radius: 10px; padding: 9px 18px;
+  font-size: 13.5px; font-weight: 600; cursor: pointer;
+  color: #FFF; background: linear-gradient(120deg, var(--violet), var(--pink));
+  transition: filter .15s; white-space: nowrap;
+}
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-primary:disabled { opacity: .45; pointer-events: none; }
+
+.btn-ghost {
+  border: 1px solid var(--border); background: transparent; color: var(--text2);
+  border-radius: 10px; padding: 9px 16px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  transition: border-color .15s, color .15s; white-space: nowrap;
+}
+.btn-ghost:hover { border-color: var(--violet); color: var(--violet); }
+
+.btn-table {
+  border: 1px solid var(--border); background: transparent; color: var(--text2);
+  border-radius: 8px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.btn-table:hover { border-color: var(--violet); color: var(--violet); }
+
+.input-base {
+  padding: 10px 13px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+  font-size: 14px; outline: none; width: 100%;
+  transition: border-color .15s, box-shadow .15s;
+}
+.input-base:focus { border-color: var(--violet); box-shadow: 0 0 0 3px var(--violet-soft); }
+
+.input-sm {
+  padding: 9px 11px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+  font-size: 13px; outline: none; width: 100%;
+}
+.input-sm:focus { border-color: var(--violet); box-shadow: 0 0 0 3px var(--violet-soft); }
+
+.select-base {
+  padding: 9px 12px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-size: 13.5px; outline: none; cursor: pointer;
+}
+
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px;
+}
+
+.badge {
+  display: inline-flex; align-items: center;
+  font-size: 11.5px; font-weight: 700; padding: 4px 10px;
+  border-radius: 999px; white-space: nowrap;
+}
+
+.th {
+  text-align: left; font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text3); padding: 12px 16px;
+  border-bottom: 1px solid var(--border); font-weight: 700; white-space: nowrap;
+}
+.th-right { text-align: right; }
+
+.td { padding: 13px 16px; border-bottom: 1px solid var(--border); }
+
+.tr-base:hover { background: var(--surface2); }
+
+/* ── Inline spinner (button loading) ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  opacity: .9;
+  animation: spin .6s linear infinite;
+  vertical-align: middle;
+}
+
+/* ── Skeleton / loading placeholders ── */
+/* Two layered cues so the "loading" motion is unmistakable in both themes:
+   1) the piece pulses its opacity, and
+   2) a highlight band sweeps across via a transform-animated pseudo-element. */
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .45; }
+}
+@keyframes skeletonShimmer {
+  100% { transform: translateX(100%); }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface2);
+  border-radius: 8px;
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(150,130,190,.32) 50%, transparent 100%);
+  animation: skeletonShimmer 1.3s ease-in-out infinite;
+}
