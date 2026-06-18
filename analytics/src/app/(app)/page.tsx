@@ -6,9 +6,7 @@ import { ROUTE_PATH } from '@/lib/routes';
 import { fnum } from '@/lib/utils';
 import { formatMoney } from '@/lib/money';
 import { KpiCard } from '@/components/kpi/KpiCard';
-import { LineChartCard } from '@/components/charts/LineChartCard';
-import { BarChartCard } from '@/components/charts/BarChartCard';
-import { DonutChartCard } from '@/components/charts/DonutChartCard';
+import { LineChartCard, BarChartCard, DonutChartCard } from '@/components/charts/ChartsBundle';
 
 const TX_LABELS: Record<string, string> = {
   PENDING: 'Pendiente', RESERVED: 'Reservada', LIQUIDATED: 'Liquidada',
