@@ -21,11 +21,11 @@ export const emptyDriverData: DriverData = {
 const CREATED_KEYS = ['jobsCreated', 'createdJobs', 'created', 'creados', 'trabajosCreados', 'totalCreated', 'totalJobs', 'jobs', 'count', 'total'];
 const FINISHED_KEYS = ['jobsFinished', 'finishedJobs', 'completedJobs', 'finalizedJobs', 'finalizados', 'trabajosFinalizados', 'completed', 'finished', 'done'];
 const CANCELLED_KEYS = ['jobsCancelled', 'cancelledJobs', 'canceledJobs', 'cancelled', 'canceled', 'cancelados', 'trabajosCancelados'];
-const ACTIVE_KEYS = ['jobsActive', 'activeJobs', 'active', 'activos', 'inProgress', 'enCurso', 'enTrabajo'];
+const ACTIVE_KEYS = ['jobsActive', 'activeJobs', 'active', 'activosActuales', 'activos', 'inProgress', 'enCurso', 'enTrabajo'];
 const PENDING_KEYS = ['jobsPending', 'pendingJobs', 'pending', 'pendientes'];
-const ONLINE_KEYS = ['driversOnline', 'onlineDrivers', 'workersOnline', 'online', 'conductoresOnline', 'trabajadoresOnline'];
+const ONLINE_KEYS = ['driversOnline', 'onlineDrivers', 'workersOnline', 'onlineActuales', 'online', 'onlineCount', 'conductoresOnline', 'trabajadoresOnline'];
 const TOTAL_WORKERS_KEYS = ['driversTotal', 'totalDrivers', 'workersTotal', 'totalWorkers', 'total'];
-const BUSY_WORKERS_KEYS = ['driversBusy', 'busyDrivers', 'workersBusy', 'enTrabajo', 'busy'];
+const BUSY_WORKERS_KEYS = ['driversBusy', 'busyDrivers', 'workersBusy', 'enTrabajoActuales', 'enTrabajo', 'busy'];
 const SERVICE_TYPE_KEYS = ['serviceType', 'type', 'name', 'nombre', 'category', 'rubro'];
 const AVG_MINUTES_KEYS = ['averageMinutes', 'avgMinutes', 'averageCompletionMinutes', 'avgDurationMinutes', 'averageCompletionTimeMinutes', 'averageCompletionTime', 'avgDuration'];
 

@@ -21,7 +21,12 @@ function isBadRequest(result: FetchResult<unknown>): boolean {
   return !result.ok && result.status === 400;
 }
 
-function isIntegrationUnavailable(result: FetchResult<unknown>): boolean {
+function isAuthOrServerFailure(result: FetchResult<unknown>): boolean {
+  if (result.ok) return false;
+  return result.status === 401 || result.status === 403 || (result.status != null && result.status >= 500);
+}
+
+function isCriticalIntegrationUnavailable(result: FetchResult<unknown>): boolean {
   if (result.ok) return false;
   return (
     result.reason === 'not-configured' ||
@@ -32,7 +37,6 @@ function isIntegrationUnavailable(result: FetchResult<unknown>): boolean {
     result.reason === 'circuit-open' ||
     result.status === 401 ||
     result.status === 403 ||
-    result.status === 404 ||
     (result.status != null && result.status >= 500)
   );
 }
@@ -59,7 +63,7 @@ export async function getDriver(range?: Pick<DriverAnalyticsRange, 'from' | 'to'
     });
   }
 
-  if (responseList.some(isIntegrationUnavailable)) {
+  if (responseList.some(isAuthOrServerFailure) || isCriticalIntegrationUnavailable(responses.summary)) {
     return neutralDriverData({
       ok: false,
       unavailable: true,
