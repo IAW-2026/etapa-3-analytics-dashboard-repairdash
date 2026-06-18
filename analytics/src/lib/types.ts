@@ -41,12 +41,38 @@ export interface PaymentsData {
 }
 
 /* ── DriverApp ── */
+export interface DriverTimeseriesPoint {
+  date: string;
+  created: number;
+  finished: number;
+  cancelled: number;
+}
+
+export interface DriverServiceTypeMetric {
+  name: string;
+  created: number;
+  finished: number;
+  cancelled: number;
+  active: number | null;
+  averageMinutes: number | null;
+}
+
 export interface DriverData {
   ok: boolean;
+  unavailable?: boolean;
+  invalidRange?: boolean;
+  message?: string;
   workers: { total: number | null; online: number | null; enTrabajo: number | null } | null;
-  jobs: { activos: number | null; pendientes: number | null } | null;
-  jobsFinalizados: number | null; // pagination.total de jobs?estado=FINALIZADO
-  serviceTypes: { total: number | null } | null;
+  jobs: {
+    activos: number | null;
+    pendientes: number | null;
+    creados: number | null;
+    finalizados: number | null;
+    cancelados: number | null;
+  } | null;
+  jobsFinalizados: number | null;
+  serviceTypes: { total: number | null; items: DriverServiceTypeMetric[] } | null;
+  jobsTimeseries: DriverTimeseriesPoint[];
 }
 
 /* ── RiderApp ── */

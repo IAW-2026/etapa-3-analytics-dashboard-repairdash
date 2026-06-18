@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { CACHE_TAGS, CACHE_TTL } from '../../cache';
-import { drHeaders, ENV } from '../../config';
+import { driverAnalyticsHeaders, ENV } from '../../config';
 import type { FetchResult } from '../../http/types';
 import { requestJson } from '../request';
 
@@ -12,9 +12,9 @@ function request(endpoint: string, path: string, query?: Record<string, string |
   return requestJson({
     service,
     endpoint,
-    baseUrl: ENV.driver.base,
-    apiKey: ENV.driver.key,
-    headers: drHeaders,
+    baseUrl: ENV.driverAnalytics.base,
+    apiKey: ENV.driverAnalytics.key,
+    headers: driverAnalyticsHeaders,
     path,
     query,
     tags,
@@ -22,16 +22,24 @@ function request(endpoint: string, path: string, query?: Record<string, string |
   });
 }
 
-export interface DriverClientResponses {
-  summary: FetchResult<unknown>;
-  finishedJobs: FetchResult<unknown>;
+export interface DriverAnalyticsQuery {
+  from: string;
+  to: string;
 }
 
-export async function fetchDriverControlPlane(): Promise<DriverClientResponses> {
-  const [summary, finishedJobs] = await Promise.all([
-    request('summary', '/api/control-plane/summary'),
-    request('jobs-finalizados', '/api/control-plane/jobs', { estado: 'FINALIZADO', page: 1, limit: 1 }),
+export interface DriverClientResponses {
+  summary: FetchResult<unknown>;
+  jobsTimeseries: FetchResult<unknown>;
+  serviceTypes: FetchResult<unknown>;
+}
+
+export async function fetchDriverAnalytics(query: DriverAnalyticsQuery): Promise<DriverClientResponses> {
+  const range = { from: query.from, to: query.to };
+  const [summary, jobsTimeseries, serviceTypes] = await Promise.all([
+    request('summary', '/api/analytics/summary', range),
+    request('jobs-timeseries', '/api/analytics/jobs-timeseries', { ...range, bucket: 'day' }),
+    request('service-types', '/api/analytics/service-types', range),
   ]);
 
-  return { summary, finishedJobs };
+  return { summary, jobsTimeseries, serviceTypes };
 }

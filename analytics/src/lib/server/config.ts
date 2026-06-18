@@ -12,6 +12,10 @@ export const ENV = {
     base: process.env.DRIVERAPP_BASE_URL || '',
     key: process.env.DRIVERAPP_API_KEY || '',
   },
+  driverAnalytics: {
+    base: process.env.DRIVER_APP_URL || process.env.DRIVERAPP_BASE_URL || '',
+    key: process.env.DRIVER_ANALYTICS_API_KEY || '',
+  },
   payments: {
     base: process.env.PAYMENTS_BASE_URL || '',
     key: process.env.PAYMENTS_API_KEY || '',
@@ -29,6 +33,7 @@ export const ENV = {
 // Per-service auth headers. Each upstream expects a different header name.
 export function raHeaders() { return { 'x-api-key': ENV.riderApp.key }; }
 export function drHeaders() { return { 'x-control-plane-api-key': ENV.driver.key }; }
+export function driverAnalyticsHeaders() { return { 'x-analytics-api-key': ENV.driverAnalytics.key }; }
 export function pmHeaders() { return { 'x-control-plane-api-key': ENV.payments.key }; }
 export function fbAnalyticsHeaders() { return { 'x-api-key': ENV.feedback.key }; }
 export function promoHeaders() { return { 'x-api-key': ENV.promociones.key }; }

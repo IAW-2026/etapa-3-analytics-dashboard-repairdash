@@ -16,7 +16,7 @@ function sumNullable(values: Array<number | null | undefined>): number | null {
 export async function getOverview(from: string, to: string, month: string): Promise<OverviewData> {
   const [payments, driver, riderapp, feedback, promociones] = await Promise.all([
     getPayments(month, periodDays({ from, to }), { from, to }),
-    getDriver(),
+    getDriver({ from, to, valid: true }),
     getRiderApp(),
     getFeedback(month),
     getPromociones(from, to),

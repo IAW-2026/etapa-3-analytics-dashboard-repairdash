@@ -16,6 +16,7 @@ interface Props {
   data: LineDatum[];
   height?: number;
   color?: string;
+  emptyLabel?: string;
   // Formato de los valores (eje Y + tooltip). Es un descriptor serializable en
   // vez de una función, para poder renderizar este client component desde un
   // Server Component sin pasar funciones a través del límite RSC.
@@ -28,11 +29,11 @@ function shortDate(d: string): string {
   return day && m ? `${day}/${m}` : d;
 }
 
-export function LineChartCard({ title, loading, data, height = 260, color = CHART_COLORS[0], format }: Props) {
+export function LineChartCard({ title, loading, data, height = 260, color = CHART_COLORS[0], emptyLabel, format }: Props) {
   const valueFormatter = format === 'money' ? (v: number) => formatMoney(v) : undefined;
   const empty = !loading && (!data || data.length === 0);
   return (
-    <ChartCard title={title} loading={loading} empty={empty} height={height}>
+    <ChartCard title={title} loading={loading} empty={empty} emptyLabel={emptyLabel} height={height}>
       <ResponsiveContainer width="100%" height={height}>
         <LineChart data={data} margin={{ top: 6, right: 12, left: -6, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke={GRID_STROKE} vertical={false} />

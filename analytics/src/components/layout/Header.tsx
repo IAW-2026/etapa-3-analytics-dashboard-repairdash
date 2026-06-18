@@ -7,7 +7,7 @@ import { PeriodSelector } from '@/components/period/PeriodSelector';
 
 // Páginas que muestran datos snapshot/totales (sin filtro temporal): no usan el
 // selector de período, así que se oculta para evitar confusión.
-const NO_PERIOD: ReadonlySet<string> = new Set(['overview', 'driver', 'riderapp']);
+const NO_PERIOD: ReadonlySet<string> = new Set(['overview', 'riderapp']);
 
 export function Header({ isMobile }: { isMobile: boolean }) {
   const { theme, setTheme, toggleSidebar } = useApp();
