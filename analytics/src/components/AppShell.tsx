@@ -8,15 +8,16 @@ import { Header } from './layout/Header';
 // Vive dentro del layout del route group para no desmontarse en cada navegación.
 function Chrome({ children }: { children: ReactNode }) {
   const { theme, sidebarOpen, closeSidebar } = useApp();
-  const [winW, setWinW] = useState(() => (typeof window === 'undefined' ? 1280 : window.innerWidth));
+  const [winW, setWinW] = useState<number | null>(null);
 
   useEffect(() => {
     const onR = () => setWinW(window.innerWidth);
+    setWinW(window.innerWidth);
     window.addEventListener('resize', onR);
     return () => window.removeEventListener('resize', onR);
   }, []);
 
-  const isMobile = winW < 880;
+  const isMobile = winW !== null && winW < 880;
 
   return (
     <div

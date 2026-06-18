@@ -24,7 +24,7 @@ export function DonutChartCard({ title, loading, data, height = 260, colors = CH
       <ResponsiveContainer width="100%" height={height}>
         <PieChart>
           <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius="55%" outerRadius="80%" paddingAngle={2} stroke="var(--surface)">
-            {data.map((_, i) => <Cell key={i} fill={colors[i % colors.length]} />)}
+            {data.map((d, i) => <Cell key={i} fill={colors[i % colors.length]} aria-label={d.name} />)}
           </Pie>
           <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
           <Legend wrapperStyle={{ fontSize: 12.5, color: 'var(--text2)' }} />
