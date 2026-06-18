@@ -28,3 +28,21 @@ export function formatMoney(value: number | null | undefined): string {
     maximumFractionDigits: 0,
   }).format(value);
 }
+
+function compactNumber(value: number): string {
+  return new Intl.NumberFormat('es-AR', {
+    maximumFractionDigits: 1,
+    minimumFractionDigits: 0,
+  }).format(value);
+}
+
+// Formato corto para ejes de charts. El tooltip sigue usando formatMoney()
+// para mostrar el monto completo.
+export function formatCompactMoney(value: number | null | undefined): string {
+  if (value == null || !Number.isFinite(value)) return '—';
+  const abs = Math.abs(value);
+  if (abs >= 1_000_000_000) return `$${compactNumber(value / 1_000_000_000)}B`;
+  if (abs >= 1_000_000) return `$${compactNumber(value / 1_000_000)}M`;
+  if (abs >= 1_000) return `$${compactNumber(value / 1_000)}k`;
+  return formatMoney(value);
+}
