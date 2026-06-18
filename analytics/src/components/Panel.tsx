@@ -14,12 +14,12 @@ interface PanelProps {
 // listados, con estados de carga/vacío unificados.
 export function Panel({ title, loading, empty, emptyLabel = 'Sin datos para el período', children }: PanelProps) {
   return (
-    <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+    <div className="card flex flex-col gap-3.5">
+      <div className="flex items-baseline gap-2.5 flex-wrap">
         <span style={{ fontFamily: 'var(--font-grotesk)', fontWeight: 600, fontSize: 15 }}>{title}</span>
       </div>
       {loading ? <TableSkeleton /> : empty ? (
-        <div style={{ padding: '28px 0', display: 'grid', placeItems: 'center', color: 'var(--text3)', fontSize: 13 }}>{emptyLabel}</div>
+        <div className="py-7 grid place-items-center text-[13px]" style={{ color: 'var(--text3)' }}>{emptyLabel}</div>
       ) : children}
     </div>
   );

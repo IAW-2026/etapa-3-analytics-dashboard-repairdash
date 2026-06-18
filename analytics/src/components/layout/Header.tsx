@@ -16,9 +16,7 @@ export function Header({ isMobile }: { isMobile: boolean }) {
   const showPeriod = !NO_PERIOD.has(route);
 
   return (
-    <header style={{
-      minHeight: 58, flexShrink: 0,
-      display: 'flex', alignItems: 'center', gap: 14,
+    <header className="min-h-[58px] shrink-0 flex items-center gap-3.5 py-2.5" style={{
       padding: '10px clamp(14px, 3vw, 28px)',
       borderBottom: '1px solid var(--border)',
       background: 'var(--surface)',
@@ -27,38 +25,35 @@ export function Header({ isMobile }: { isMobile: boolean }) {
         <button
           onClick={toggleSidebar}
           aria-label="Abrir menú"
-          style={{
-            display: 'flex', flexDirection: 'column', gap: 4,
-            background: 'none', border: '1px solid var(--border)',
-            borderRadius: 9, padding: '9px 8px', cursor: 'pointer',
+          className="flex flex-col gap-1 rounded-[9px] px-2 py-[9px] cursor-pointer bg-transparent" style={{
+            border: '1px solid var(--border)',
           }}
         >
           {[0, 1, 2].map((i) => (
-            <span key={i} style={{ width: 16, height: 2, borderRadius: 2, background: 'var(--text2)', display: 'block' }} />
+            <span key={i} className="w-4 h-0.5 rounded-sm block" style={{ background: 'var(--text2)' }} />
           ))}
         </button>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+      <div className="flex items-center gap-2 min-w-0">
         <span style={{ fontSize: 13, color: 'var(--text3)', whiteSpace: 'nowrap' }}>{meta.group}</span>
         <span style={{ fontSize: 13, color: 'var(--text3)' }}>/</span>
         <span style={{ fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{meta.title}</span>
       </div>
 
-      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div className="ml-auto flex items-center gap-3">
         {showPeriod && (
           <Suspense fallback={<span className="btn-ghost" style={{ opacity: 0.6 }}>Período</span>}>
             <PeriodSelector />
           </Suspense>
         )}
         {!isMobile && (
-          <div style={{ display: 'flex', padding: 3, borderRadius: 999, background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+          <div className="flex p-[3px] rounded-full" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
             {(['light', 'dark'] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTheme(t)}
-                style={{
-                  border: 'none', borderRadius: 999, padding: '5px 13px', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                className="rounded-full px-[13px] py-[5px] text-xs font-semibold cursor-pointer border-none" style={{
                   background: theme === t ? (t === 'light' ? 'var(--surface)' : 'var(--surface3)') : 'transparent',
                   color: theme === t ? 'var(--text)' : 'var(--text3)',
                   boxShadow: theme === t && t === 'light' ? '0 1px 4px rgba(20,10,40,.18)' : 'none',

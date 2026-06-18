@@ -1,5 +1,47 @@
 @import "tailwindcss";
 
+@theme {
+  /* ── Colores de superficie ── */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface2);
+  --color-surface3: var(--surface3);
+
+  /* ── Colores de borde ── */
+  --color-border: var(--border);
+  --color-border2: var(--border2);
+
+  /* ── Colores de texto ── */
+  --color-text: var(--text);
+  --color-text2: var(--text2);
+  --color-text3: var(--text3);
+
+  /* ── Colores de marca ── */
+  --color-violet: var(--violet);
+  --color-violet-soft: var(--violet-soft);
+  --color-pink: var(--pink);
+  --color-pink-soft: var(--pink-soft);
+  --color-mag: var(--mag);
+  --color-mag-soft: var(--mag-soft);
+
+  /* ── Colores semánticos ── */
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-mut: var(--mut);
+  --color-mut-soft: var(--mut-soft);
+
+  /* ── Tipografía ── */
+  --font-grotesk: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+
+  /* ── Sombras ── */
+  --shadow-card: var(--shadow);
+}
+
 @layer base {
   html, body {
     margin: 0;
@@ -98,33 +140,12 @@
 }
 .btn-ghost:hover { border-color: var(--violet); color: var(--violet); }
 
-.btn-table {
-  border: 1px solid var(--border); background: transparent; color: var(--text2);
-  border-radius: 8px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer;
-  transition: border-color .15s, color .15s;
-}
-.btn-table:hover { border-color: var(--violet); color: var(--violet); }
-
-.input-base {
-  padding: 10px 13px; border-radius: 10px;
-  border: 1px solid var(--border); background: var(--bg); color: var(--text);
-  font-size: 14px; outline: none; width: 100%;
-  transition: border-color .15s, box-shadow .15s;
-}
-.input-base:focus { border-color: var(--violet); box-shadow: 0 0 0 3px var(--violet-soft); }
-
 .input-sm {
   padding: 9px 11px; border-radius: 10px;
   border: 1px solid var(--border); background: var(--bg); color: var(--text);
   font-size: 13px; outline: none; width: 100%;
 }
 .input-sm:focus { border-color: var(--violet); box-shadow: 0 0 0 3px var(--violet-soft); }
-
-.select-base {
-  padding: 9px 12px; border-radius: 10px;
-  border: 1px solid var(--border); background: var(--surface); color: var(--text);
-  font-size: 13.5px; outline: none; cursor: pointer;
-}
 
 .card {
   background: var(--surface); border: 1px solid var(--border);
@@ -160,9 +181,6 @@
 }
 
 /* ── Skeleton / loading placeholders ── */
-/* Two layered cues so the "loading" motion is unmistakable in both themes:
-   1) the piece pulses its opacity, and
-   2) a highlight band sweeps across via a transform-animated pseudo-element. */
 @keyframes skeletonPulse {
   0%, 100% { opacity: 1; }
   50%      { opacity: .45; }
