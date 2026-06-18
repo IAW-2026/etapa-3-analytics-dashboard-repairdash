@@ -4,20 +4,21 @@ import { Skeleton } from '@/components/ui/Skeleton';
 
 interface ChartCardProps {
   title: string;
+  meta?: string;
   loading?: boolean;
-  empty?: boolean;        // no hay datos para el período
+  empty?: boolean;
   emptyLabel?: string;
   children: ReactNode;
   height?: number;
+  titleSize?: number;
 }
 
-// Card contenedora para cualquier visualización: encabezado + estados de carga
-// y vacío unificados, para que los charts solo se ocupen de dibujar.
-export function ChartCard({ title, loading, empty, emptyLabel = 'Sin datos para el período', children, height = 260 }: ChartCardProps) {
+export function ChartCard({ title, meta, loading, empty, emptyLabel = 'Sin datos para el periodo', children, height = 260, titleSize = 15 }: ChartCardProps) {
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-        <span style={{ fontFamily: 'var(--font-grotesk)', fontWeight: 600, fontSize: 15 }}>{title}</span>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, flexWrap: 'wrap' }}>
+        <span style={{ fontFamily: 'var(--font-grotesk)', fontWeight: 700, fontSize: titleSize }}>{title}</span>
+        {meta && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: 'var(--text3)' }}>{meta}</span>}
       </div>
       <div style={{ height, position: 'relative' }}>
         {loading ? (

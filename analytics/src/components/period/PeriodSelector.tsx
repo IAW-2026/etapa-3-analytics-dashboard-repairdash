@@ -21,6 +21,12 @@ export function PeriodSelector() {
     });
     setOpen(false);
   };
+  const clearFilters = () => {
+    startTransition(() => {
+      router.replace(pathname, { scroll: false });
+    });
+    setOpen(false);
+  };
 
   const presets: { key: PeriodPreset; label: string }[] = [
     { key: 'this-month', label: PRESET_LABELS['this-month'] },
@@ -101,6 +107,13 @@ export function PeriodSelector() {
                 Aplicar rango
               </button>
             </div>
+            <button
+              className="btn-ghost"
+              onClick={clearFilters}
+              style={{ marginTop: 2, width: '100%', justifyContent: 'center' }}
+            >
+              Limpiar filtros
+            </button>
           </div>
         </>
       )}

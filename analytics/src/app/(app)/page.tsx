@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { DollarSign, ArrowLeftRight, Users, PackageCheck, Star, Tag } from 'lucide-react';
-import { periodFromSearchParams } from '@/lib/period';
+import { resolvePeriod } from '@/lib/period';
 import { getOverview } from '@/lib/server/services';
 import { ROUTE_PATH } from '@/lib/routes';
 import { fnum } from '@/lib/utils';
@@ -15,8 +15,8 @@ const TX_LABELS: Record<string, string> = {
   TRANSFERRED: 'Transferida', DISPUTED: 'En disputa', REFUNDED: 'Reembolsada', FAILED: 'Fallida',
 };
 
-export default async function OverviewPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const period = periodFromSearchParams(await searchParams);
+export default async function OverviewPage() {
+  const period = resolvePeriod('this-month');
   const data = await getOverview(period.from, period.to, period.month);
   const k = data.kpis;
 
@@ -43,7 +43,7 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
       <div>
         <h1 style={{ fontFamily: 'var(--font-grotesk)', fontSize: 'clamp(22px, 3vw, 27px)', fontWeight: 700, margin: '0 0 6px', letterSpacing: '-.015em' }}>Visión consolidada</h1>
         <p style={{ margin: 0, fontSize: 14, color: 'var(--text2)', maxWidth: '64ch' }}>
-          Indicadores clave del negocio agregados de las cinco webapps — período: <strong>{period.label}</strong>.
+          Indicadores clave del negocio agregados de las cinco webapps, combinando snapshots operativos y métricas recientes.
         </p>
       </div>
 
@@ -60,7 +60,7 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
       {/* Charts */}
       <LineChartCard title="Ingresos por día" data={revenueSeries} format="money" color="var(--ok)" />
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.7fr) minmax(0, 1fr)', gap: 16 }}>
-        <BarChartCard title="Transacciones por estado" data={txBars} color="var(--mag)" />
+        <BarChartCard title="Transacciones por estado" meta="payments /summary" data={txBars} color="var(--violet)" orientation="horizontal" />
         <DonutChartCard title="Distribución de calificaciones" data={ratingDonut} />
       </div>
 
