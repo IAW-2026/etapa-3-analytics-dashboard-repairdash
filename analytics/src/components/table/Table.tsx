@@ -10,8 +10,8 @@ export interface Column<T> {
 // (≤1024px, ver table.css) cada fila se vuelve una card usando data-label.
 export function Table<T>({ columns, rows }: { columns: Column<T>[]; rows: T[] }) {
   return (
-    <div className="table-wrap" style={{ overflowX: 'auto' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div className="table-wrap overflow-x-auto">
+      <table className="w-full" style={{ borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             {columns.map((col, i) => (

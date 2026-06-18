@@ -18,10 +18,10 @@ export default async function RiderAppPage() {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 22, maxWidth: 1280, margin: '0 auto' }}>
+    <div className="flex flex-col gap-[22px] max-w-[1280px] mx-auto">
       <PageTitle title="RiderApp" subtitle="Clientes, viajes e ingresos (totales actuales, sin filtro temporal)." />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 14 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-3.5">
         <KpiCard label="Clientes" value={fnum(data.clientes)} icon={<Users size={15} />} />
         <KpiCard label="Viajes" value={fnum(data.viajes)} icon={<MapPin size={15} />} />
         <KpiCard label="Viajes concluidos" value={fnum(data.viajesConcluidos)} color="var(--ok)" icon={<CheckCircle2 size={15} />} />

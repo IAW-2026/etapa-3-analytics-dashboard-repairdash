@@ -34,11 +34,11 @@ export function PeriodSelector() {
   ];
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="btn-ghost"
-        style={{ display: 'flex', alignItems: 'center', gap: 8, opacity: pending ? 0.6 : 1 }}
+        className="btn-ghost flex items-center gap-2"
+        style={{ opacity: pending ? 0.6 : 1 }}
       >
         <CalendarRange size={15} strokeWidth={1.9} />
         <span>{period.label}</span>
@@ -46,24 +46,16 @@ export function PeriodSelector() {
 
       {open && (
         <>
-          <div onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 30 }} />
-          <div
-            style={{
-              position: 'absolute', right: 0, top: 'calc(100% + 8px)', zIndex: 31,
-              width: 260, background: 'var(--surface)', border: '1px solid var(--border2)',
-              borderRadius: 14, boxShadow: 'var(--shadow)', padding: 12,
-              display: 'flex', flexDirection: 'column', gap: 8,
-            }}
-          >
+          <div onClick={() => setOpen(false)} className="fixed inset-0 z-30" />
+          <div className="absolute right-0 top-[calc(100%+8px)] z-[31] w-[260px] bg-surface border border-border2 rounded-xl shadow-card p-3 flex flex-col gap-2">
             {presets.map((p) => {
               const active = period.preset === p.key;
               return (
                 <button
                   key={p.key}
                   onClick={() => apply(resolvePeriod(p.key))}
+                  className="text-left border-none cursor-pointer rounded-[9px] px-3 py-[9px] text-[13.5px] font-semibold"
                   style={{
-                    textAlign: 'left', border: 'none', cursor: 'pointer',
-                    borderRadius: 9, padding: '9px 12px', fontSize: 13.5, fontWeight: 600,
                     background: active ? 'var(--violet-soft)' : 'transparent',
                     color: active ? 'var(--text)' : 'var(--text2)',
                   }}
@@ -73,44 +65,40 @@ export function PeriodSelector() {
               );
             })}
 
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <span style={{ fontSize: 11.5, color: 'var(--text3)', fontWeight: 700, letterSpacing: '.05em', textTransform: 'uppercase' }}>Rango personalizado</span>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, color: 'var(--text3)' }}>
+            <div className="border-t border-border pt-2.5 flex flex-col gap-2">
+              <span className="text-[11.5px] text-text3 font-bold tracking-[.05em] uppercase">Rango personalizado</span>
+              <label className="flex flex-col gap-1 text-xs text-text3">
                 Desde
                 <input
                   type="date"
                   defaultValue={period.from}
-                  className="input-sm"
+                  className="input-sm bg-bg text-text border border-border"
                   id="period-from"
-                  style={{ background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border)' }}
                 />
               </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, color: 'var(--text3)' }}>
+              <label className="flex flex-col gap-1 text-xs text-text3">
                 Hasta
                 <input
                   type="date"
                   defaultValue={period.to}
-                  className="input-sm"
+                  className="input-sm bg-bg text-text border border-border"
                   id="period-to"
-                  style={{ background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border)' }}
                 />
               </label>
               <button
-                className="btn-primary"
+                className="btn-primary mt-0.5"
                 onClick={() => {
                   const from = (document.getElementById('period-from') as HTMLInputElement)?.value;
                   const to = (document.getElementById('period-to') as HTMLInputElement)?.value;
                   if (from && to && from <= to) apply(resolvePeriod('custom', from, to));
                 }}
-                style={{ marginTop: 2 }}
               >
                 Aplicar rango
               </button>
             </div>
             <button
-              className="btn-ghost"
+              className="btn-ghost mt-0.5 w-full justify-center"
               onClick={clearFilters}
-              style={{ marginTop: 2, width: '100%', justifyContent: 'center' }}
             >
               Limpiar filtros
             </button>
