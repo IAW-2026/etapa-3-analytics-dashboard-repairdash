@@ -21,7 +21,11 @@ export default async function PromocionesPage({ searchParams }: { searchParams: 
   const period = periodFromSearchParams(await searchParams);
   const data = await getPromociones(period.from, period.to);
 
-  const promoUsageBars = data.topPromos.map((p) => ({ name: p.nombre, value: p.usos }));
+  const financialBars = [
+    { name: 'Valor original', value: data.valorOriginal ?? 0 },
+    { name: 'Valor pagado', value: data.valorPagado ?? 0 },
+    { name: 'Ahorro total', value: data.ahorroTotal ?? 0 },
+  ];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 22, maxWidth: 1280, margin: '0 auto' }}>
@@ -35,7 +39,7 @@ export default async function PromocionesPage({ searchParams }: { searchParams: 
         <KpiCard label="Ahorro total" value={formatMoney(data.ahorroTotal ?? null)} color="var(--pink)" icon={<Percent size={15} />} />
       </div>
 
-      <BarChartCard title="Usos por promocion" data={promoUsageBars} multicolor orientation="horizontal" />
+      <BarChartCard title="Impacto economico" data={financialBars} color="var(--violet)" orientation="horizontal" format="money" />
 
       <Panel title="Top promociones por uso" empty={data.topPromos.length === 0}>
         <Table columns={columns} rows={data.topPromos} />

@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { ChartCard } from './ChartCard';
 import { AXIS_TICK, GRID_STROKE, TOOLTIP_CONTENT_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from './chartTheme';
 import { CHART_COLORS } from '@/lib/utils';
+import { formatMoney } from '@/lib/money';
 
 export interface BarDatum {
   name: string;
@@ -18,9 +19,14 @@ interface Props {
   color?: string;
   multicolor?: boolean;
   orientation?: 'vertical' | 'horizontal';
+  format?: 'money';
 }
 
-function HorizontalBars({ data, color, multicolor }: { data: BarDatum[]; color: string; multicolor?: boolean }) {
+function formatValue(value: number, format?: Props['format']): string | number {
+  return format === 'money' ? formatMoney(value) : value;
+}
+
+function HorizontalBars({ data, color, multicolor, format }: { data: BarDatum[]; color: string; multicolor?: boolean; format?: Props['format'] }) {
   const max = Math.max(...data.map((d) => d.value), 1);
 
   return (
@@ -42,7 +48,7 @@ function HorizontalBars({ data, color, multicolor }: { data: BarDatum[]; color: 
                 }}
               />
             </div>
-            <span style={{ color: 'var(--text)', fontFamily: 'var(--font-grotesk)', fontSize: 17, fontWeight: 700, textAlign: 'right' }}>{item.value}</span>
+            <span style={{ color: 'var(--text)', fontFamily: 'var(--font-grotesk)', fontSize: 17, fontWeight: 700, textAlign: 'right' }}>{formatValue(item.value, format)}</span>
           </div>
         );
       })}
@@ -50,7 +56,7 @@ function HorizontalBars({ data, color, multicolor }: { data: BarDatum[]; color: 
   );
 }
 
-export function BarChartCard({ title, meta, loading, data, height = 260, color = CHART_COLORS[0], multicolor, orientation = 'vertical' }: Props) {
+export function BarChartCard({ title, meta, loading, data, height = 260, color = CHART_COLORS[0], multicolor, orientation = 'vertical', format }: Props) {
   const empty = !loading && (!data || data.length === 0 || data.every((d) => d.value === 0));
   const horizontalHeight = orientation === 'horizontal'
     ? Math.max(height, data.length * 34 + Math.max(0, data.length - 1) * 12 + 4)
@@ -59,7 +65,7 @@ export function BarChartCard({ title, meta, loading, data, height = 260, color =
   if (orientation === 'horizontal') {
     return (
       <ChartCard title={title} meta={meta} loading={loading} empty={empty} height={horizontalHeight} titleSize={18}>
-        <HorizontalBars data={data} color={color} multicolor={multicolor} />
+        <HorizontalBars data={data} color={color} multicolor={multicolor} format={format} />
       </ChartCard>
     );
   }
@@ -70,8 +76,8 @@ export function BarChartCard({ title, meta, loading, data, height = 260, color =
         <BarChart data={data} margin={{ top: 6, right: 8, left: -10, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke={GRID_STROKE} vertical={false} />
           <XAxis dataKey="name" tick={AXIS_TICK} tickLine={false} axisLine={{ stroke: GRID_STROKE }} interval={0} textAnchor="middle" height={28} />
-          <YAxis tick={AXIS_TICK} tickLine={false} axisLine={false} allowDecimals={false} width={42} />
-          <Tooltip cursor={{ fill: 'var(--violet-soft)' }} contentStyle={TOOLTIP_CONTENT_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
+          <YAxis tick={AXIS_TICK} tickLine={false} axisLine={false} allowDecimals={false} width={format === 'money' ? 70 : 42} tickFormatter={(value) => String(formatValue(Number(value), format))} />
+          <Tooltip cursor={{ fill: 'var(--violet-soft)' }} contentStyle={TOOLTIP_CONTENT_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} formatter={(value: number) => [formatValue(value, format), 'Total']} />
           <Bar dataKey="value" radius={[6, 6, 0, 0]} fill={color} maxBarSize={48}>
             {multicolor && data.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
           </Bar>
