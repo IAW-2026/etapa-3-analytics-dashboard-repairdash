@@ -35,8 +35,8 @@ function HorizontalBars({ data, color, multicolor, format }: { data: BarDatum[];
         const width = `${Math.max(0, Math.min(100, (item.value / max) * 100))}%`;
         const fill = multicolor ? CHART_COLORS[index % CHART_COLORS.length] : color;
         return (
-          <div key={`${item.name}-${index}`} style={{ display: 'grid', gridTemplateColumns: 'minmax(120px, 190px) minmax(90px, 1fr) minmax(42px, max-content)', alignItems: 'center', gap: 20, minHeight: 22 }}>
-            <span style={{ color: 'var(--text2)', fontSize: 15, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</span>
+          <div key={`${item.name}-${index}`} style={{ display: 'grid', gridTemplateColumns: 'minmax(78px, 34%) minmax(0, 1fr) max-content', alignItems: 'center', gap: 10, minHeight: 22, minWidth: 0 }}>
+            <span style={{ color: 'var(--text2)', fontSize: 15, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>{item.name}</span>
             <div style={{ height: 10, borderRadius: 999, background: 'var(--surface2)', overflow: 'hidden' }}>
               <div
                 style={{
@@ -48,7 +48,7 @@ function HorizontalBars({ data, color, multicolor, format }: { data: BarDatum[];
                 }}
               />
             </div>
-            <span style={{ color: 'var(--text)', fontFamily: 'var(--font-grotesk)', fontSize: 17, fontWeight: 700, textAlign: 'right' }}>{formatValue(item.value, format)}</span>
+            <span style={{ color: 'var(--text)', fontFamily: 'var(--font-grotesk)', fontSize: 17, fontWeight: 700, textAlign: 'right', whiteSpace: 'nowrap' }}>{formatValue(item.value, format)}</span>
           </div>
         );
       })}

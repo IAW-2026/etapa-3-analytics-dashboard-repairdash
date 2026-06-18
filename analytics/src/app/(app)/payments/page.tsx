@@ -37,7 +37,7 @@ export default async function PaymentsPage({ searchParams }: { searchParams: Pro
 
       <LineChartCard title="GMV por día" data={revenueSeries} format="money" color="var(--ok)" />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.7fr) minmax(0, 1fr)', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: 16 }}>
         <BarChartCard title="Transacciones por estado" meta="payments /summary" data={txBars} color="var(--violet)" orientation="horizontal" />
         <BarChartCard title="Retiros por estado" data={wdBars} color="var(--violet)" />
       </div>
