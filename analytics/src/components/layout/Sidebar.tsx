@@ -20,44 +20,27 @@ export function Sidebar({ isMobile }: { isMobile: boolean }) {
   const pathname = usePathname();
   const { user } = useUser();
 
-  const linkStyle = (active: boolean): React.CSSProperties => ({
-    display: 'flex', alignItems: 'center', gap: 11,
-    padding: '9px 12px', borderRadius: 10, cursor: 'pointer',
-    margin: '1px 10px', fontSize: 14, textDecoration: 'none',
-    color: active ? 'var(--text)' : 'var(--text2)',
-    fontWeight: active ? 600 : 400,
-    background: active ? 'var(--violet-soft)' : 'transparent',
-    transition: 'background .12s',
-  });
-
-  const sidebarStyle: React.CSSProperties = {
-    width: 256, flexShrink: 0, display: 'flex', flexDirection: 'column',
-    background: 'var(--surface)', borderRight: '1px solid var(--border)', height: '100%',
-    ...(isMobile ? {
-      position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 50,
-      transform: `translateX(${sidebarOpen ? '0' : '-105%'})`,
-      transition: 'transform .28s ease',
-      boxShadow: 'var(--shadow)',
-    } : {}),
-  };
-
   return (
-    <aside style={sidebarStyle}>
+    <aside
+      className={`w-[256px] shrink-0 flex flex-col bg-surface border-r border-border h-full${isMobile ? ' fixed left-0 top-0 bottom-0 z-50 shadow-card' : ''}`}
+      style={{
+        ...(isMobile ? {
+          transform: `translateX(${sidebarOpen ? '0' : '-105%'})`,
+          transition: 'transform .28s ease',
+        } : {}),
+      }}
+    >
       {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '20px 18px 16px' }}>
-        <div style={{
-          width: 30, height: 30, borderRadius: 9,
-          background: 'linear-gradient(135deg, var(--violet), var(--pink))',
-          transform: 'rotate(45deg)', flexShrink: 0, marginLeft: 3,
-        }} />
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <span style={{ fontFamily: 'var(--font-grotesk)', fontWeight: 700, fontSize: 16, letterSpacing: '-.01em' }}>Analytics</span>
-          <span style={{ fontSize: 11, color: 'var(--text3)', letterSpacing: '.05em' }}>VISIÓN CONSOLIDADA</span>
+      <div className="flex items-center gap-[11px] px-[18px] pt-5 pb-4">
+        <div className="size-[30px] rounded-[9px] bg-gradient-to-br from-violet to-pink rotate-45 shrink-0 ml-[3px]" />
+        <div className="flex flex-col">
+          <span className="font-grotesk font-bold text-base tracking-[-.01em]">Analytics</span>
+          <span className="text-[11px] text-text3 tracking-[.05em]">VISIÓN CONSOLIDADA</span>
         </div>
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, overflowY: 'auto', padding: '8px 0 12px' }}>
+      <nav className="flex-1 overflow-y-auto pt-2 pb-3">
         {NAV.map(({ id, icon: Icon }) => {
           const active = pathname === ROUTE_PATH[id];
           return (
@@ -65,23 +48,27 @@ export function Sidebar({ isMobile }: { isMobile: boolean }) {
               key={id}
               href={ROUTE_PATH[id]}
               onClick={closeSidebar}
-              style={linkStyle(active)}
+              className={`flex items-center gap-[11px] px-3 py-[9px] rounded-[10px] cursor-pointer mx-[10px] my-[1px] text-sm no-underline transition-[background] duration-[120ms] ${active ? 'font-semibold' : 'font-normal'}`}
+              style={{
+                color: active ? 'var(--text)' : 'var(--text2)',
+                background: active ? 'var(--violet-soft)' : 'transparent',
+              }}
               onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'var(--surface2)'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = active ? 'var(--violet-soft)' : 'transparent'; }}
             >
-              <Icon size={17} strokeWidth={1.9} style={{ flexShrink: 0, color: active ? ROUTE_META[id].dot : 'var(--text3)' }} />
-              <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ROUTE_META[id].title}</span>
+              <Icon size={17} strokeWidth={1.9} className="shrink-0" style={{ color: active ? ROUTE_META[id].dot : 'var(--text3)' }} />
+              <span className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis">{ROUTE_META[id].title}</span>
             </Link>
           );
         })}
       </nav>
 
       {/* Footer */}
-      <div style={{ padding: '12px 18px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div className="px-[18px] py-3 border-t border-border flex items-center gap-2.5">
         <UserButton />
-        <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-          <span style={{ fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.fullName || user?.firstName || 'Súper admin'}</span>
-          <span style={{ fontSize: 11.5, color: 'var(--text3)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.primaryEmailAddress?.emailAddress || ''}</span>
+        <div className="flex flex-col min-w-0">
+          <span className="text-[13px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis">{user?.fullName || user?.firstName || 'Súper admin'}</span>
+          <span className="text-[11.5px] text-text3 whitespace-nowrap overflow-hidden text-ellipsis">{user?.primaryEmailAddress?.emailAddress || ''}</span>
         </div>
       </div>
     </aside>

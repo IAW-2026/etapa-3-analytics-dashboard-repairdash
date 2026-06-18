@@ -22,10 +22,10 @@ export default async function PromocionesPage({ searchParams }: { searchParams: 
     : null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 22, maxWidth: 1280, margin: '0 auto' }}>
+    <div className="flex flex-col gap-[22px] max-w-[1280px] mx-auto">
       <PageTitle title="Promociones" subtitle={`Estado de promociones y uso en el periodo ${period.label}.`} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 14 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-3.5">
         <KpiCard label="Vigentes" value={fnum(data.vigentes)} color="var(--ok)" icon={<Tag size={15} />} />
         <KpiCard label="Programadas" value={fnum(data.programadas)} color="var(--violet)" icon={<Clock size={15} />} />
         <KpiCard label="Vencidas" value={fnum(data.vencidas)} color="var(--text3)" icon={<CalendarX size={15} />} />
@@ -35,24 +35,24 @@ export default async function PromocionesPage({ searchParams }: { searchParams: 
 
       <BarChartCard title="Usos por promocion" data={promoUsageBars} multicolor orientation="horizontal" />
 
-      <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-          <span style={{ fontFamily: 'var(--font-grotesk)', fontSize: 18, fontWeight: 700 }}>Impacto economico</span>
-          <span style={{ fontSize: 12.5, color: 'var(--text3)', fontWeight: 700 }}>historial /count</span>
+      <div className="bg-surface border border-border rounded-2xl p-5 flex flex-col gap-4">
+        <div className="flex items-baseline justify-between gap-3 flex-wrap">
+          <span className="font-grotesk text-lg font-bold">Impacto economico</span>
+          <span className="text-[12.5px] text-text3 font-bold">historial /count</span>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12 }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3">
           {financialBars.map((item) => (
-            <div key={item.name} style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 14, background: 'var(--surface2)', minWidth: 0 }}>
-              <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em' }}>{item.name}</div>
-              <div style={{ marginTop: 8, fontFamily: 'var(--font-grotesk)', fontSize: 22, fontWeight: 800, color: item.name === 'Ahorro total' ? 'var(--pink)' : 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div key={item.name} className="border border-border rounded-xl p-3.5 bg-surface2 min-w-0">
+              <div className="text-xs text-text3 font-bold uppercase tracking-[.04em]">{item.name}</div>
+              <div className="mt-2 font-grotesk text-[22px] font-extrabold whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: item.name === 'Ahorro total' ? 'var(--pink)' : 'var(--text)' }}>
                 {formatMoney(item.value)}
               </div>
             </div>
           ))}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', paddingTop: 2, color: 'var(--text2)', fontSize: 13 }}>
+        <div className="flex justify-between gap-3 flex-wrap pt-0.5 text-text2 text-[13px]">
           <span>Tasa de ahorro sobre valor original</span>
-          <strong style={{ color: 'var(--ok)' }}>{fpct(ahorroRate, true)}</strong>
+          <strong className="text-ok">{fpct(ahorroRate, true)}</strong>
         </div>
       </div>
     </div>

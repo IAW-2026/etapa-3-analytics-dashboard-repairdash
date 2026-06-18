@@ -32,27 +32,24 @@ export default async function DriverPage({ searchParams }: { searchParams: Promi
       : null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 22, maxWidth: 1280, margin: '0 auto' }}>
+    <div className="flex flex-col gap-[22px] max-w-[1280px] mx-auto">
       <PageTitle title="DriverApp" subtitle={`Metricas operativas desde Driver App (${range.label}).`} />
 
       {notice ? (
         <div
-          className="card"
+          className="border rounded-2xl p-5 flex items-center gap-2.5"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
             borderColor: data.unavailable ? 'var(--danger)' : 'var(--border)',
             color: data.unavailable ? 'var(--danger)' : 'var(--text2)',
             background: data.unavailable ? 'var(--danger-soft)' : 'var(--surface)',
           }}
         >
           <AlertTriangle size={17} />
-          <span style={{ fontSize: 13.5, fontWeight: 650 }}>{notice}</span>
+          <span className="text-[13.5px] font-[650]">{notice}</span>
         </div>
       ) : null}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 14 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-3.5">
         <KpiCard label="Trabajos creados" value={fnum(created)} icon={<PlusCircle size={15} />} />
         <KpiCard label="Finalizados" value={fnum(finished)} color="var(--ok)" icon={<CheckCircle2 size={15} />} />
         <KpiCard label="Cancelados" value={fnum(cancelled)} color="var(--danger)" icon={<XCircle size={15} />} />
@@ -68,16 +65,16 @@ export default async function DriverPage({ searchParams }: { searchParams: Promi
       />
 
       <Panel title="Performance por tipo de servicio" empty={!hasServiceTypes} emptyLabel={DRIVER_ANALYTICS_EMPTY_MESSAGE}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 12 }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-3">
           {serviceTypes.map((item) => (
-            <div key={item.name} style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 14, background: 'var(--surface2)', display: 'flex', flexDirection: 'column', gap: 12, minWidth: 0 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'flex-start' }}>
-                <strong style={{ color: 'var(--text)', fontFamily: 'var(--font-grotesk)', fontSize: 16, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</strong>
+            <div key={item.name} className="border border-border rounded-xl p-3.5 bg-surface2 flex flex-col gap-3 min-w-0">
+              <div className="flex justify-between gap-2.5 items-start">
+                <strong className="text-text font-grotesk text-base min-w-0 overflow-hidden text-ellipsis">{item.name}</strong>
                 {item.averageMinutes != null ? (
-                  <span className="badge" style={{ background: 'var(--violet-soft)', color: 'var(--violet)' }}>{fnum(Math.round(item.averageMinutes))} min</span>
+                  <span className="inline-flex items-center text-[11.5px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap bg-violet-soft text-violet">{fnum(Math.round(item.averageMinutes))} min</span>
                 ) : null}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 9 }}>
+              <div className="grid grid-cols-3 gap-[9px]">
                 <Metric label="Creados" value={item.created} />
                 <Metric label="Finalizados" value={item.finished} />
                 <Metric label="Cancelados" value={item.cancelled} />
@@ -92,9 +89,9 @@ export default async function DriverPage({ searchParams }: { searchParams: Promi
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div style={{ minWidth: 0 }}>
-      <div style={{ color: 'var(--text3)', fontSize: 11.5, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em' }}>{label}</div>
-      <div style={{ marginTop: 4, color: 'var(--text)', fontFamily: 'var(--font-grotesk)', fontSize: 19, fontWeight: 800 }}>{fnum(value)}</div>
+    <div className="min-w-0">
+      <div className="text-text3 text-[11.5px] font-bold uppercase tracking-[.04em]">{label}</div>
+      <div className="mt-1 text-text font-grotesk text-[19px] font-extrabold">{fnum(value)}</div>
     </div>
   );
 }

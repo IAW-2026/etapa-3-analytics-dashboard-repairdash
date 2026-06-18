@@ -19,7 +19,7 @@ export function Skeleton({ w = '100%', h = 14, radius = 8, style }: SkeletonProp
 export function TableSkeleton({ rows = 6, cols = 4 }: { rows?: number; cols?: number }) {
   const widths = ['70%', '52%', '40%', '60%', '34%', '48%', '44%'];
   return (
-    <table style={{ width: '100%', borderCollapse: 'collapse' }} aria-hidden>
+    <table className="w-full" style={{ borderCollapse: 'collapse' }} aria-hidden>
       <tbody>
         {Array.from({ length: rows }).map((_, r) => (
           <tr key={r} className="tr-base">

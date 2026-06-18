@@ -15,16 +15,16 @@ interface ChartCardProps {
 
 export function ChartCard({ title, meta, loading, empty, emptyLabel = 'Sin datos para el periodo', children, height = 260, titleSize = 15 }: ChartCardProps) {
   return (
-    <div className="card flex flex-col gap-3.5">
+    <div className="bg-surface border border-border rounded-2xl p-5 flex flex-col gap-3.5">
       <div className="flex items-baseline gap-3.5 flex-wrap">
-        <span style={{ fontFamily: 'var(--font-grotesk)', fontWeight: 700, fontSize: titleSize }}>{title}</span>
-        {meta && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: 'var(--text3)' }}>{meta}</span>}
+        <span className="font-grotesk font-bold" style={{ fontSize: titleSize }}>{title}</span>
+        {meta && <span className="font-mono text-[13px] font-bold text-text3">{meta}</span>}
       </div>
       <div className="relative" style={{ height }}>
         {loading ? (
           <Skeleton w="100%" h={height} radius={12} />
         ) : empty ? (
-          <div className="grid place-items-center text-[13px]" style={{ height, color: 'var(--text3)' }}>{emptyLabel}</div>
+          <div className="grid place-items-center text-[13px] text-text3" style={{ height }}>{emptyLabel}</div>
         ) : (
           children
         )}

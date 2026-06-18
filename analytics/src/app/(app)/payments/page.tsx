@@ -24,10 +24,10 @@ export default async function PaymentsPage({ searchParams }: { searchParams: Pro
   const wdBars = Object.entries(data.withdrawalsByStatus || {}).map(([k, v]) => ({ name: WD_LABELS[k] || k, value: v }));
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 22, maxWidth: 1280, margin: '0 auto' }}>
+    <div className="flex flex-col gap-[22px] max-w-[1280px] mx-auto">
       <PageTitle title="Payments" subtitle={`KPIs financieros del mes (${period.month}).`} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 14 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-3.5">
         <KpiCard label="GMV" value={formatMoney(data.gmv ?? null)} hint="Monto bruto cobrado" color="var(--ok)" icon={<DollarSign size={15} />} />
         <KpiCard label="Pagos cobrados" value={fnum(data.paidTransactions)} icon={<ArrowLeftRight size={15} />} />
         <KpiCard label="Ticket promedio" value={formatMoney(data.averageTicket ?? null)} icon={<Ticket size={15} />} />
@@ -37,14 +37,14 @@ export default async function PaymentsPage({ searchParams }: { searchParams: Pro
 
       <LineChartCard title="GMV por día" data={revenueSeries} format="money" color="var(--ok)" />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: 16 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] gap-4">
         <BarChartCard title="Transacciones por estado" meta="payments /summary" data={txBars} color="var(--violet)" orientation="horizontal" />
         <BarChartCard title="Retiros por estado" data={wdBars} color="var(--violet)" />
       </div>
 
       {/* Liquidaciones y retiros */}
       <PageTitle title="Liquidaciones y retiros" subtitle="Resumen del mes." />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 14 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-3.5">
         <KpiCard label="Retiros aprobados" value={fnum(s?.withdrawalsApproved)} icon={<Banknote size={15} />} />
         <KpiCard label="Monto aprobado" value={formatMoney(s?.withdrawalsAmountApproved ?? null)} color="var(--ok)" icon={<Banknote size={15} />} />
       </div>

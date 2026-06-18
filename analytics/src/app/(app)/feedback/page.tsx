@@ -19,10 +19,10 @@ export default async function FeedbackPage({ searchParams }: { searchParams: Pro
   const decisionDonut = Object.entries(data.reportsPorDecision || {}).map(([k, v]) => ({ name: DECISION_LABELS[k] || k, value: v }));
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 22, maxWidth: 1280, margin: '0 auto' }}>
+    <div className="flex flex-col gap-[22px] max-w-[1280px] mx-auto">
       <PageTitle title="Feedback" subtitle={`Reviews y reportes del mes (${period.month}).`} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 14 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-3.5">
         <KpiCard label="Reviews del mes" value={fnum(data.reviewsDelMes)} icon={<MessageSquare size={15} />} />
         <KpiCard label="Reportes del mes" value={fnum(data.reportesDelMes)} color="var(--warn)" icon={<Flag size={15} />} />
         <KpiCard label="Fallo c/ cliente" value={fnum(data.reportesContraCliente)} color="var(--danger)" icon={<UserX size={15} />} />
@@ -31,7 +31,7 @@ export default async function FeedbackPage({ searchParams }: { searchParams: Pro
         <KpiCard label="Tasa de reportes" value={fpct(data.tasaReportes, true)} hint="reportes / trabajos" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-4">
         <DonutChartCard title="Distribución de calificaciones" data={ratingDonut} />
         <BarChartCard title="Reportes por estado" data={estadoBars} multicolor />
         <DonutChartCard title="Reportes por decisión" data={decisionDonut} />
