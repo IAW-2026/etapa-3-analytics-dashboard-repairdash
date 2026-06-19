@@ -7,7 +7,7 @@ import { Header } from './layout/Header';
 // Chrome persistente compartido por todas las páginas: sidebar + header.
 // Vive dentro del layout del route group para no desmontarse en cada navegación.
 function Chrome({ children }: { children: ReactNode }) {
-  const { theme, sidebarOpen, closeSidebar } = useApp();
+  const { sidebarOpen, closeSidebar } = useApp();
   const [winW, setWinW] = useState<number | null>(null);
 
   useEffect(() => {
@@ -21,7 +21,6 @@ function Chrome({ children }: { children: ReactNode }) {
 
   return (
     <div
-      data-theme={theme}
       className="flex w-full h-dvh bg-bg text-text overflow-hidden"
       style={{ fontFamily: 'var(--font-instrument), sans-serif' }}
     >
