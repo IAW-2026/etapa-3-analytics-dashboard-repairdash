@@ -2,6 +2,9 @@
 
 Aplicación **Analytics Dashboard** del [Proyecto IAW 2026](https://etapa-3-analytics-dashboard-repaird.vercel.app) — comisión `RepairDash`.
 
+Usuario admin: [controlplane+clerk_test@iaw.com]  
+Contraseña admin: [Iawuser#]
+
 ## ¿Qué es?
 
 El sistema RepairDash está formado por **cinco webapps independientes** (RiderApp, DriverApp, Payments, Feedback y Promociones), cada una con su propia base de datos y su propia API. Por separado, ninguna da una foto completa del negocio: una sabe de viajes, otra de cobros, otra de reseñas, etc.
