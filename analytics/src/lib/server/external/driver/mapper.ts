@@ -19,6 +19,7 @@ export const emptyDriverData: DriverData = {
 };
 
 const CREATED_KEYS = ['jobsCreated', 'createdJobs', 'created', 'creados', 'trabajosCreados', 'totalCreated', 'totalJobs', 'jobs', 'count', 'total'];
+const ACCEPTED_KEYS = ['jobsAccepted', 'acceptedJobs', 'accepted', 'aceptados', 'trabajosAceptados'];
 const FINISHED_KEYS = ['jobsFinished', 'finishedJobs', 'completedJobs', 'finalizedJobs', 'finalizados', 'trabajosFinalizados', 'completed', 'finished', 'done'];
 const CANCELLED_KEYS = ['jobsCancelled', 'cancelledJobs', 'canceledJobs', 'cancelled', 'canceled', 'cancelados', 'trabajosCancelados'];
 const ACTIVE_KEYS = ['jobsActive', 'activeJobs', 'active', 'activosActuales', 'activos', 'inProgress', 'enCurso', 'enTrabajo'];
@@ -129,6 +130,7 @@ function mapTimeseries(responses: DriverClientResponses): DriverTimeseriesPoint[
       return {
         date,
         created: pickNumber(metrics, CREATED_KEYS, 'jobs-timeseries', `payload[${index}]`, traceId) ?? 0,
+        accepted: pickNumber(metrics, ACCEPTED_KEYS, 'jobs-timeseries', `payload[${index}]`, traceId) ?? 0,
         finished: pickNumber(metrics, FINISHED_KEYS, 'jobs-timeseries', `payload[${index}]`, traceId) ?? 0,
         cancelled: pickNumber(metrics, CANCELLED_KEYS, 'jobs-timeseries', `payload[${index}]`, traceId) ?? 0,
       };
