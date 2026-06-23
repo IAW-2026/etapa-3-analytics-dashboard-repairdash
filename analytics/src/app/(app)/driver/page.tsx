@@ -20,8 +20,8 @@ export default async function DriverPage({ searchParams }: { searchParams: Promi
   const cancelled = jobs?.cancelados ?? 0;
   const online = workers?.online ?? 0;
   const timeseries = data.jobsTimeseries
-    .filter((point) => point.created > 0 || point.finished > 0 || point.cancelled > 0)
-    .map((point) => ({ date: point.date, value: point.created + point.finished + point.cancelled }));
+    .filter((point) => point.accepted > 0)
+    .map((point) => ({ date: point.date, value: point.accepted }));
   const serviceTypes = data.serviceTypes?.items ?? [];
   const hasServiceTypes = serviceTypes.some((item) => item.created > 0 || item.finished > 0 || item.cancelled > 0 || (item.active ?? 0) > 0);
   const hasAnyData = created > 0 || finished > 0 || cancelled > 0 || online > 0 || timeseries.length > 0 || hasServiceTypes;
@@ -60,7 +60,7 @@ export default async function DriverPage({ searchParams }: { searchParams: Promi
       </div>
 
       <LineChartCard
-        title="Actividad diaria de trabajos"
+        title="Trabajos aceptados por dia"
         data={timeseries}
         height={260}
         color="var(--violet)"

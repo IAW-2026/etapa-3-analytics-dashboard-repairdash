@@ -44,6 +44,7 @@ export interface PaymentsData {
 export interface DriverTimeseriesPoint {
   date: string;
   created: number;
+  accepted: number;
   finished: number;
   cancelled: number;
 }
