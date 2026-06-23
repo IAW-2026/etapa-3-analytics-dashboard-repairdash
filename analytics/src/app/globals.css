@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@variant dark (&:is([data-theme="dark"] *));
 @theme {
   /* ── Colores de superficie ── */
   --color-bg: var(--bg);
@@ -93,34 +92,6 @@
   --mut-soft: rgba(142,132,166,.14);
   --shadow: 0 18px 44px rgba(8,4,18,.55);
   color-scheme: dark;
-}
-
-[data-theme="light"] {
-  --bg: #F7F4FB;
-  --surface: #FFFFFF;
-  --surface2: #F2EDF9;
-  --surface3: #EAE2F5;
-  --border: #E5DDF1;
-  --border2: #D4C7EA;
-  --text: #1B1226;
-  --text2: #5C5174;
-  --text3: #6E6286;
-  --violet: #7240E8;
-  --violet-soft: rgba(114,64,232,.10);
-  --pink: #D9438F;
-  --pink-soft: rgba(217,67,143,.10);
-  --mag: #A93BBE;
-  --mag-soft: rgba(169,59,190,.10);
-  --ok: #1F9D63;
-  --ok-soft: rgba(31,157,99,.10);
-  --warn: #A56F12;
-  --warn-soft: rgba(176,120,24,.12);
-  --danger: #D2424E;
-  --danger-soft: rgba(210,66,78,.10);
-  --mut: #7C7194;
-  --mut-soft: rgba(124,113,148,.12);
-  --shadow: 0 18px 44px rgba(60,40,100,.14);
-  color-scheme: light;
 }
 
 /* ── Reusable classes ── */

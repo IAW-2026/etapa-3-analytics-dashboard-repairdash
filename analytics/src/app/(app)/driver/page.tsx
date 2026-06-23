@@ -65,7 +65,7 @@ export default async function DriverPage({ searchParams }: { searchParams: Promi
       />
 
       <Panel title="Performance por tipo de servicio" empty={!hasServiceTypes} emptyLabel={DRIVER_ANALYTICS_EMPTY_MESSAGE}>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-3">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-3">
           {serviceTypes.map((item) => (
             <div key={item.name} className="border border-border rounded-xl p-3.5 bg-surface2 flex flex-col gap-3 min-w-0">
               <div className="flex justify-between gap-2.5 items-start">
@@ -90,7 +90,7 @@ export default async function DriverPage({ searchParams }: { searchParams: Promi
 function Metric({ label, value }: { label: string; value: number }) {
   return (
     <div className="min-w-0">
-      <div className="text-text3 text-[11.5px] font-bold uppercase tracking-[.04em]">{label}</div>
+      <div className="text-text3 text-[11px] font-bold uppercase tracking-[.02em] whitespace-nowrap">{label}</div>
       <div className="mt-1 text-text font-grotesk text-[19px] font-extrabold">{fnum(value)}</div>
     </div>
   );

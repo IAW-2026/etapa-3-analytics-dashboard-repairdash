@@ -46,7 +46,7 @@ export default async function OverviewPage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3.5">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] min-[880px]:grid-cols-6 gap-3.5">
         <KpiCard label="Ingresos" value={formatMoney(k.ingresos ?? null)} hint="Pagos liquidados" color="var(--ok)" icon={<DollarSign size={15} />} />
         <KpiCard label="Transacciones" value={fnum(k.transacciones)} hint="Volumen total" icon={<ArrowLeftRight size={15} />} />
         <KpiCard label="Usuarios activos" value={fnum(k.usuariosActivos)} hint="Clientes + drivers" icon={<Users size={15} />} />

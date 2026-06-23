@@ -10,7 +10,7 @@ import { PeriodSelector } from '@/components/period/PeriodSelector';
 const NO_PERIOD: ReadonlySet<string> = new Set(['overview', 'riderapp']);
 
 export function Header({ isMobile }: { isMobile: boolean }) {
-  const { theme, setTheme, toggleSidebar } = useApp();
+  const { toggleSidebar } = useApp();
   const route = routeFromPath(usePathname());
   const meta = ROUTE_META[route];
   const showPeriod = !NO_PERIOD.has(route);
@@ -40,23 +40,6 @@ export function Header({ isMobile }: { isMobile: boolean }) {
           <Suspense fallback={<span className="btn-ghost opacity-60">Período</span>}>
             <PeriodSelector />
           </Suspense>
-        )}
-        {!isMobile && (
-          <div className="flex p-[3px] rounded-full bg-surface2 border border-border">
-            {(['light', 'dark'] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTheme(t)}
-                className="rounded-full px-[13px] py-[5px] text-xs font-semibold cursor-pointer border-none" style={{
-                  background: theme === t ? (t === 'light' ? 'var(--surface)' : 'var(--surface3)') : 'transparent',
-                  color: theme === t ? 'var(--text)' : 'var(--text3)',
-                  boxShadow: theme === t && t === 'light' ? '0 1px 4px rgba(20,10,40,.18)' : 'none',
-                }}
-              >
-                {t === 'light' ? 'Claro' : 'Oscuro'}
-              </button>
-            ))}
-          </div>
         )}
       </div>
     </header>
