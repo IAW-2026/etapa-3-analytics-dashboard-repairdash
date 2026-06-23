@@ -48,7 +48,7 @@ export function mapRiderAppData(responses: RiderAppClientResponses): RiderAppDat
     path: 'data',
     traceId: responses.clientesList.traceId,
   });
-  const rated = clientes.map((cliente) => num(cliente.calificacion, { service, endpoint: 'clientes-list', path: 'data.calificacion' })).filter((n): n is number => n != null);
+  const rated = clientes.map((cliente) => num(cliente.calificacion, { service, endpoint: 'clientes-list', path: 'data.calificacion' }))    .filter((n): n is number => n != null && n > 0);
   const calificacionPromedio = rated.length ? rated.reduce((a, b) => a + b, 0) / rated.length : null;
 
   const viajes = asRecordArray(viajesList?.data, {
