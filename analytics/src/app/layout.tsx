@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
-      <html lang="es" className={`${jakarta.variable} h-full`}>
+      <html lang="es" className={`${jakarta.variable} h-full`} data-theme="dark">
         <body
           style={{ fontFamily: 'var(--font-jakarta), sans-serif', background: 'var(--bg)', color: 'var(--text)', margin: 0, padding: 0, height: '100%' }}
         >

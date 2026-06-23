@@ -7,36 +7,32 @@ import { Header } from './layout/Header';
 // Chrome persistente compartido por todas las páginas: sidebar + header.
 // Vive dentro del layout del route group para no desmontarse en cada navegación.
 function Chrome({ children }: { children: ReactNode }) {
-  const { theme, sidebarOpen, closeSidebar } = useApp();
-  const [winW, setWinW] = useState(() => (typeof window === 'undefined' ? 1280 : window.innerWidth));
+  const { sidebarOpen, closeSidebar } = useApp();
+  const [winW, setWinW] = useState<number | null>(null);
 
   useEffect(() => {
     const onR = () => setWinW(window.innerWidth);
+    setWinW(window.innerWidth);
     window.addEventListener('resize', onR);
     return () => window.removeEventListener('resize', onR);
   }, []);
 
-  const isMobile = winW < 880;
+  const isMobile = winW !== null && winW < 880;
 
   return (
     <div
-      data-theme={theme}
-      style={{
-        display: 'flex', width: '100%', height: '100dvh',
-        background: 'var(--bg)', color: 'var(--text)',
-        fontFamily: 'var(--font-instrument), sans-serif',
-        overflow: 'hidden',
-      }}
+      className="flex w-full h-dvh bg-bg text-text overflow-hidden"
+      style={{ fontFamily: 'var(--font-instrument), sans-serif' }}
     >
       {isMobile && sidebarOpen && (
-        <div onClick={closeSidebar} style={{ position: 'fixed', inset: 0, background: 'rgba(10,6,16,.55)', zIndex: 40 }} />
+        <div onClick={closeSidebar} className="fixed inset-0 z-40 bg-[rgba(10,6,16,.55)]" />
       )}
 
       <Sidebar isMobile={isMobile} />
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, height: '100%' }}>
+      <div className="flex-1 flex flex-col min-w-0 h-full">
         <Header isMobile={isMobile} />
-        <main style={{ flex: 1, overflowY: 'auto', padding: 'clamp(16px, 3vw, 30px)' }}>
+        <main className="flex-1 overflow-y-auto p-[clamp(16px,3vw,30px)]">
           {children}
         </main>
       </div>

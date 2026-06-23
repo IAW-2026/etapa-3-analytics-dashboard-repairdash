@@ -25,13 +25,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // recién después aplicamos la preferencia guardada.
   useEffect(() => {
     const saved = (typeof window !== 'undefined' && localStorage.getItem(THEME_KEY)) as Theme | null;
+    const t: Theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
     // eslint-disable-next-line react-hooks/set-state-in-effect -- sync de localStorage post-hydratación, una sola vez
-    if (saved === 'light' || saved === 'dark') setThemeState(saved);
+    if (t !== 'dark') setThemeState(t);
+    document.documentElement.setAttribute('data-theme', t);
   }, []);
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t);
-    if (typeof window !== 'undefined') localStorage.setItem(THEME_KEY, t);
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem(THEME_KEY, t);
   }, []);
 
   const value: AppContextValue = {

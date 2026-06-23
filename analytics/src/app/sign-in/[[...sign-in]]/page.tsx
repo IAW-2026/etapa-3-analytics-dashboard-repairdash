@@ -24,68 +24,62 @@ const clerkAppearance = {
 
 export default function SignInPage() {
   return (
-    <main
-      style={{
-        minHeight: '100dvh', position: 'relative', overflow: 'hidden',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: 'var(--bg)', color: 'var(--text)', padding: 24,
-      }}
-    >
+    <main className="min-h-dvh relative overflow-hidden flex flex-col items-center justify-center bg-bg text-text p-6">
       {/* Decorative blobs */}
-      <div aria-hidden style={{ position: 'absolute', top: -128, left: -128, width: 420, height: 420, borderRadius: '50%', opacity: 0.25, filter: 'blur(120px)', pointerEvents: 'none', background: 'var(--violet)' }} />
-      <div aria-hidden style={{ position: 'absolute', bottom: -128, right: -128, width: 420, height: 420, borderRadius: '50%', opacity: 0.2, filter: 'blur(120px)', pointerEvents: 'none', background: 'var(--pink)' }} />
+      <div aria-hidden className="absolute -top-32 -left-32 size-[420px] rounded-full opacity-25 blur-[120px] pointer-events-none bg-violet" />
+      <div aria-hidden className="absolute -bottom-32 -right-32 size-[420px] rounded-full opacity-20 blur-[120px] pointer-events-none bg-pink" />
 
-      <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: 1000, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 'clamp(32px, 5vw, 72px)' }}>
+      <div className="relative z-10 w-full max-w-[1000px] flex flex-wrap items-center justify-center gap-[clamp(32px,5vw,72px)]">
         {/* LEFT — presentation */}
-        <div style={{ flex: '1 1 360px', maxWidth: 460, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 24, textAlign: 'left' }}>
+        <div className="flex-[1_1_360px] max-w-[460px] flex flex-col items-start gap-6 text-left">
           {/* Brand */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
-            <div style={{ width: 64, height: 64, borderRadius: 18, display: 'grid', placeItems: 'center', color: '#FFF', background: 'linear-gradient(135deg, var(--violet), var(--pink))', boxShadow: '0 10px 30px rgba(157,107,255,.35)' }}>
+          <div className="flex flex-col items-start gap-3">
+            <div className="size-16 rounded-[18px] grid place-items-center text-white bg-gradient-to-br from-violet to-pink shadow-[0_10px_30px_rgba(157,107,255,.35)]">
               <BarChart3 size={30} strokeWidth={1.75} />
             </div>
-            <h1 style={{ fontFamily: 'var(--font-grotesk)', fontSize: 42, fontWeight: 700, letterSpacing: '-.02em', margin: 0 }}>
-              Analy<span style={{ color: 'var(--violet)' }}>tics</span>
+            <h1 className="font-grotesk text-[42px] font-bold tracking-[-.02em] m-0">
+              Analy<span className="text-violet">tics</span>
             </h1>
-            <p style={{ margin: 0, fontSize: 13, fontWeight: 500, color: 'var(--text3)', letterSpacing: '.04em' }}>
+            <p className="m-0 text-[13px] font-medium text-text3 tracking-[.04em]">
               VISIÓN CONSOLIDADA DEL NEGOCIO
             </p>
           </div>
 
           {/* Context card */}
-          <div style={{ width: '100%', borderRadius: 18, padding: 24, background: 'var(--surface)', border: '1px solid var(--border2)', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
-            <span className="badge" style={{ background: 'var(--ok-soft)', color: 'var(--ok)', gap: 7 }}>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ok)' }} />
+          <div className="w-full rounded-[18px] p-6 bg-surface border border-border2 flex flex-col items-start gap-3">
+            <span className="inline-flex items-center gap-[7px] text-[11.5px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap bg-ok-soft text-ok">
+              <span className="size-[7px] rounded-full bg-ok" />
               Acceso restringido
             </span>
-            <h2 style={{ fontFamily: 'var(--font-grotesk)', fontSize: 19, fontWeight: 700, lineHeight: 1.25, margin: 0 }}>
+            <h2 className="font-grotesk text-[19px] font-bold leading-[1.25] m-0">
               Iniciá sesión para analizar el sistema.
             </h2>
-            <p style={{ margin: 0, fontSize: 13.5, color: 'var(--text2)', lineHeight: 1.55 }}>
+            <p className="m-0 text-[13.5px] text-text2 leading-[1.55]">
               Indicadores clave consolidados de RiderApp, DriverApp, FeedbackApp, PromotionsApp y PaymentsApp.
             </p>
           </div>
 
           {/* Trust row */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: 24, rowGap: 8, fontSize: 11.5, color: 'var(--text3)' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <BarChart3 size={14} strokeWidth={1.75} style={{ color: 'var(--ok)' }} /> Datos reales
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-[11.5px] text-text3">
+            <span className="inline-flex items-center gap-1.5">
+              <BarChart3 size={14} strokeWidth={1.75} className="text-ok" /> Datos reales
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <Activity size={14} strokeWidth={1.75} style={{ color: 'var(--violet)' }} /> Tiempo real
+            <span className="inline-flex items-center gap-1.5">
+              <Activity size={14} strokeWidth={1.75} className="text-violet" /> Tiempo real
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <CheckCircle2 size={14} strokeWidth={1.75} style={{ color: 'var(--pink)' }} /> Solo super-admin
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle2 size={14} strokeWidth={1.75} className="text-pink" /> Solo super-admin
             </span>
           </div>
         </div>
 
         {/* RIGHT — sign-in */}
-        <div style={{ flex: '0 1 400px', display: 'flex', justifyContent: 'center', minWidth: 320 }}>
+        <div className="flex-[0_1_400px] flex justify-center min-w-[320px]">
           <SignIn signUpUrl="/sign-in" appearance={clerkAppearance} />
         </div>
       </div>
 
-      <div style={{ position: 'absolute', bottom: 16, left: 0, right: 0, textAlign: 'center', fontSize: 11, color: 'var(--text3)' }}>
+      <div className="absolute bottom-4 left-0 right-0 text-center text-[11px] text-text3">
         © 2026 Analytics Hub
       </div>
     </main>

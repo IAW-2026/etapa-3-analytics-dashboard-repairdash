@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { DollarSign, ArrowLeftRight, Users, PackageCheck, Star, Tag } from 'lucide-react';
 import { resolvePeriod } from '@/lib/period';
 import { getOverview } from '@/lib/server/services';
@@ -6,9 +5,8 @@ import { ROUTE_PATH } from '@/lib/routes';
 import { fnum } from '@/lib/utils';
 import { formatMoney } from '@/lib/money';
 import { KpiCard } from '@/components/kpi/KpiCard';
-import { LineChartCard } from '@/components/charts/LineChartCard';
-import { BarChartCard } from '@/components/charts/BarChartCard';
-import { DonutChartCard } from '@/components/charts/DonutChartCard';
+import { LineChartCard, BarChartCard, DonutChartCard } from '@/components/charts/ChartsBundle';
+import { ServiceCard } from './_components/ServiceCard';
 
 const TX_LABELS: Record<string, string> = {
   PENDING: 'Pendiente', RESERVED: 'Reservada', LIQUIDATED: 'Liquidada',
@@ -39,16 +37,16 @@ export default async function OverviewPage() {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 22, maxWidth: 1280, margin: '0 auto' }}>
+    <div className="flex flex-col gap-[22px] max-w-[1280px] mx-auto">
       <div>
-        <h1 style={{ fontFamily: 'var(--font-grotesk)', fontSize: 'clamp(22px, 3vw, 27px)', fontWeight: 700, margin: '0 0 6px', letterSpacing: '-.015em' }}>Visión consolidada</h1>
-        <p style={{ margin: 0, fontSize: 14, color: 'var(--text2)', maxWidth: '64ch' }}>
+        <h1 className="font-grotesk text-[clamp(22px,3vw,27px)] font-bold m-0 mb-[6px] tracking-[-.015em]">Visión consolidada</h1>
+        <p className="m-0 text-sm text-text2 max-w-[64ch]">
           Indicadores clave del negocio agregados de las cinco webapps, combinando snapshots operativos y métricas recientes.
         </p>
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3.5">
         <KpiCard label="Ingresos" value={formatMoney(k.ingresos ?? null)} hint="Pagos liquidados" color="var(--ok)" icon={<DollarSign size={15} />} />
         <KpiCard label="Transacciones" value={fnum(k.transacciones)} hint="Volumen total" icon={<ArrowLeftRight size={15} />} />
         <KpiCard label="Usuarios activos" value={fnum(k.usuariosActivos)} hint="Clientes + drivers" icon={<Users size={15} />} />
@@ -59,32 +57,15 @@ export default async function OverviewPage() {
 
       {/* Charts */}
       <LineChartCard title="Ingresos por día" data={revenueSeries} format="money" color="var(--ok)" />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: 16 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] gap-4">
         <BarChartCard title="Transacciones por estado" meta="payments /summary" data={txBars} color="var(--violet)" orientation="horizontal" />
         <DonutChartCard title="Distribución de calificaciones" data={ratingDonut} />
       </div>
 
       {/* Service cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 16 }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-4">
         {cards.map((c) => (
-          <Link key={c.key} href={ROUTE_PATH[c.route]} className="card" style={{ display: 'flex', flexDirection: 'column', gap: 14, textDecoration: 'none', color: 'inherit' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ width: 9, height: 9, borderRadius: '50%', background: c.dot }} />
-              <span style={{ fontFamily: 'var(--font-grotesk)', fontWeight: 600, fontSize: 15.5 }}>{c.name}</span>
-              <span className="badge" style={{ marginLeft: 'auto', background: c.ok ? 'var(--ok-soft)' : 'var(--danger-soft)', color: c.ok ? 'var(--ok)' : 'var(--danger)' }}>
-                {c.ok ? 'Operativa' : 'Sin datos'}
-              </span>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              {c.stats.map((s, i) => (
-                <div key={i}>
-                  <div style={{ fontFamily: 'var(--font-grotesk)', fontSize: 20, fontWeight: 700 }}>{s.v}</div>
-                  <div style={{ fontSize: 12, color: 'var(--text3)' }}>{s.l}</div>
-                </div>
-              ))}
-            </div>
-            <span style={{ fontSize: 13, fontWeight: 600, color: c.dot }}>Ver detalle →</span>
-          </Link>
+          <ServiceCard key={c.key} href={ROUTE_PATH[c.route]} name={c.name} dot={c.dot} ok={c.ok} stats={c.stats} />
         ))}
       </div>
     </div>
