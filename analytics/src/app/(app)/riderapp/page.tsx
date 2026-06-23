@@ -26,7 +26,7 @@ export default async function RiderAppPage() {
         <KpiCard label="Viajes" value={fnum(data.viajes)} icon={<MapPin size={15} />} />
         <KpiCard label="Viajes concluidos" value={fnum(data.viajesConcluidos)} color="var(--ok)" icon={<CheckCircle2 size={15} />} />
         <KpiCard label="Ingresos (pagos)" value={formatMoney(data.ingresos ?? null)} color="var(--ok)" icon={<DollarSign size={15} />} />
-        <KpiCard label="Calificación prom." value={data.calificacionPromedio != null ? `${data.calificacionPromedio.toFixed(2)} ★` : '—'} color="var(--warn)" icon={<Star size={15} />} />
+        <KpiCard label="Calificación prom. de riders" value={data.calificacionPromedio != null ? `${data.calificacionPromedio.toFixed(2)} ★` : '—'} color="var(--warn)" icon={<Star size={15} />} />
       </div>
 
       <BarChartCard title="Viajes por estado" data={viajesBars} multicolor />
