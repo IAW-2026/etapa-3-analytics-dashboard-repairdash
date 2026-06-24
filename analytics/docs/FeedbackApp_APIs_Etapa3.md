@@ -213,9 +213,11 @@ x-analytics-api-key: <ANALYTICS_API_KEY>
 ```
 
 **Reglas comunes:**
-- Query param `month=YYYY-MM`. Si se omite, se usa el mes actual en `America/Argentina/Buenos_Aires`.
+- Query params:
+  - `month=YYYY-MM` (opcional). Mes granular. Si se omite, se usa el mes actual en `America/Argentina/Buenos_Aires`.
+  - `from=YYYY-MM-DD` y `to=YYYY-MM-DD` (opcionales). Rango de fechas exacto. Cuando están presentes, anulan el filtro por `month` y filtran por fecha de creación dentro del rango.
 - Todos los endpoints son **solo lectura**. No aceptan mutaciones.
-- La respuesta siempre incluye `source`, `period` y `generatedAt`.
+- La respuesta siempre incluye `source`, `period` (string | { from, to }) y `generatedAt`.
 - Montos como string decimal (no aplica a Feedback, pero se mantiene la convención de fechas en ISO 8601).
 
 ---
@@ -224,7 +226,9 @@ x-analytics-api-key: <ANALYTICS_API_KEY>
 
 KPIs del mes: reviews y reportes.
 
-**Query params:** `month=YYYY-MM`
+**Query params:**
+- `month=YYYY-MM` (opcional)
+- `from=YYYY-MM-DD` y `to=YYYY-MM-DD` (opcionales, anulan `month`)
 
 **Respuesta 200:**
 ```json
@@ -254,7 +258,9 @@ KPIs del mes: reviews y reportes.
 
 Distribución de valoraciones del mes por cantidad de estrellas.
 
-**Query params:** `month=YYYY-MM`
+**Query params:**
+- `month=YYYY-MM` (opcional)
+- `from=YYYY-MM-DD` y `to=YYYY-MM-DD` (opcionales, anulan `month`)
 
 **Respuesta 200:**
 ```json
@@ -282,7 +288,9 @@ Solo incluye reviews con `estaCompleta = true` y `valoracion != null` creadas en
 
 Distribución de reportes del mes por estado y decisión.
 
-**Query params:** `month=YYYY-MM`
+**Query params:**
+- `month=YYYY-MM` (opcional)
+- `from=YYYY-MM-DD` y `to=YYYY-MM-DD` (opcionales, anulan `month`)
 
 **Respuesta 200:**
 ```json

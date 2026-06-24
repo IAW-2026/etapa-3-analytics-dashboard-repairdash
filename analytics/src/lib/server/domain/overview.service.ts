@@ -18,7 +18,7 @@ export async function getOverview(from: string, to: string, month: string): Prom
     getPayments(month, periodDays({ from, to }), { from, to }),
     getDriver({ from, to, valid: true }),
     getRiderApp(),
-    getFeedback(month),
+    getFeedback(month, from, to),
     getPromociones(from, to),
   ]);
 
