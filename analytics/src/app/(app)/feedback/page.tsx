@@ -12,7 +12,7 @@ const DECISION_LABELS: Record<string, string> = { AFavor: 'A favor', EnContra: '
 
 export default async function FeedbackPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const period = periodFromSearchParams(await searchParams);
-  const data = await getFeedback(period.month);
+  const data = await getFeedback(period.month, period.from, period.to);
 
   const ratingDonut = data.ratingsDistribution.map((d) => ({ name: `${d.estrellas}★`, value: d.cantidad }));
   const estadoBars = Object.entries(data.reportsPorEstado || {}).map(([k, v]) => ({ name: ESTADO_LABELS[k] || k, value: v }));

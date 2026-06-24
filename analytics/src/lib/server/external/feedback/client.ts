@@ -28,11 +28,14 @@ export interface FeedbackClientResponses {
   reportsBreakdown: FetchResult<unknown>;
 }
 
-export async function fetchFeedbackAnalytics(month: string): Promise<FeedbackClientResponses> {
+export async function fetchFeedbackAnalytics(month: string, from?: string, to?: string): Promise<FeedbackClientResponses> {
+  const query: Record<string, string> = { month };
+  if (from != null) query.from = from;
+  if (to != null) query.to = to;
   const [summary, ratingsDistribution, reportsBreakdown] = await Promise.all([
-    request('summary', '/api/analytics/feedback/summary', { month }),
-    request('ratings-distribution', '/api/analytics/feedback/ratings/distribution', { month }),
-    request('reports-breakdown', '/api/analytics/feedback/reports/breakdown', { month }),
+    request('summary', '/api/analytics/feedback/summary', query),
+    request('ratings-distribution', '/api/analytics/feedback/ratings/distribution', query),
+    request('reports-breakdown', '/api/analytics/feedback/reports/breakdown', query),
   ]);
 
   return { summary, ratingsDistribution, reportsBreakdown };
