@@ -32,7 +32,7 @@ export async function getOverview(from: string, to: string, month: string): Prom
       ingresos: payments.gmv,
       transacciones,
       usuariosActivos: sumNullable([riderapp.clientes, driver.workers?.total]),
-      pedidosCompletados: sumNullable([driver.jobsFinalizados, riderapp.viajesConcluidos]),
+      pedidosCompletados: driver.jobsFinalizados,
       calificacionPromedio: feedback.calificacionPromedio ?? riderapp.calificacionPromedio,
       promocionesActivas: promociones.vigentes,
     },

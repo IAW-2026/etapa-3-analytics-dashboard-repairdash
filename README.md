@@ -20,9 +20,7 @@ https://etapa-3-analytics-dashboard-repaird.vercel.app
 - `/feedback`: reviews, reportes, calificaciones y decisiones.
 - `/promociones`: promociones vigentes, programadas, vencidas, usos y ahorro total.
 
-## Stack
 
-Next.js 16, React 19, Tailwind CSS 4, Recharts, Clerk y lucide-react.
 
 ## Integracion
 

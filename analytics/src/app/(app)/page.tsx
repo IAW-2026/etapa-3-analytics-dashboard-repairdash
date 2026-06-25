@@ -50,7 +50,7 @@ export default async function OverviewPage() {
         <KpiCard label="Ingresos" value={formatMoney(k.ingresos ?? null)} hint="Pagos liquidados" color="var(--ok)" icon={<DollarSign size={15} />} />
         <KpiCard label="Transacciones" value={fnum(k.transacciones)} hint="Volumen total" icon={<ArrowLeftRight size={15} />} />
         <KpiCard label="Usuarios activos" value={fnum(k.usuariosActivos)} hint="Clientes + drivers" icon={<Users size={15} />} />
-        <KpiCard label="Pedidos completados" value={fnum(k.pedidosCompletados)} hint="Trabajos + viajes" icon={<PackageCheck size={15} />} />
+        <KpiCard label="Pedidos completados" value={fnum(k.pedidosCompletados)} hint="Finalizados del periodo" icon={<PackageCheck size={15} />} />
         <KpiCard label="Calificación prom." value={k.calificacionPromedio != null ? `${k.calificacionPromedio.toFixed(2)} ★` : '—'} hint="Reviews del mes" color="var(--warn)" icon={<Star size={15} />} />
         <KpiCard label="Promociones activas" value={fnum(k.promocionesActivas)} hint="Vigentes" color="var(--violet)" icon={<Tag size={15} />} />
       </div>
