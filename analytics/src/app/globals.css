@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@theme {
+  /* ── Colores de superficie ── */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface2);
+  --color-surface3: var(--surface3);
+
+  /* ── Colores de borde ── */
+  --color-border: var(--border);
+  --color-border2: var(--border2);
+
+  /* ── Colores de texto ── */
+  --color-text: var(--text);
+  --color-text2: var(--text2);
+  --color-text3: var(--text3);
+
+  /* ── Colores de marca ── */
+  --color-violet: var(--violet);
+  --color-violet-soft: var(--violet-soft);
+  --color-pink: var(--pink);
+  --color-pink-soft: var(--pink-soft);
+  --color-mag: var(--mag);
+  --color-mag-soft: var(--mag-soft);
+
+  /* ── Colores semánticos ── */
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-mut: var(--mut);
+  --color-mut-soft: var(--mut-soft);
+
+  /* ── Tipografía ── */
+  --font-grotesk: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+
+  /* ── Sombras ── */
+  --shadow-card: var(--shadow);
+}
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    height: 100%;
+  }
+
+  * { box-sizing: border-box; }
+
+  input, select, button, textarea { font-family: inherit; }
+
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-thumb { background: rgba(140,120,180,.28); border-radius: 99px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+}
+
+/* ── Fonts (self-hosted Jakarta + system monospace, no Google Fonts) ── */
+:root {
+  --font-grotesk: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+  --font-instrument: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+}
+
+/* ── Design tokens dark (default) ── */
+:root {
+  --bg: #0D0913;
+  --surface: #151020;
+  --surface2: #1E1730;
+  --surface3: #261D3C;
+  --border: #2A2142;
+  --border2: #382C56;
+  --text: #F3EEFA;
+  --text2: #AC9FC6;
+  --text3: #8F82AB;
+  --violet: #9D6BFF;
+  --violet-soft: rgba(157,107,255,.15);
+  --pink: #F26BB8;
+  --pink-soft: rgba(242,107,184,.14);
+  --mag: #C964E0;
+  --mag-soft: rgba(201,100,224,.14);
+  --ok: #52C98E;
+  --ok-soft: rgba(82,201,142,.13);
+  --warn: #E0A94E;
+  --warn-soft: rgba(224,169,78,.14);
+  --danger: #EF6470;
+  --danger-soft: rgba(239,100,112,.13);
+  --mut: #8E84A6;
+  --mut-soft: rgba(142,132,166,.14);
+  --shadow: 0 18px 44px rgba(8,4,18,.55);
+  color-scheme: dark;
+}
+
+/* ── Reusable classes ── */
+.btn-primary {
+  border: none; border-radius: 10px; padding: 9px 18px;
+  font-size: 13.5px; font-weight: 600; cursor: pointer;
+  color: #FFF; background: linear-gradient(120deg, var(--violet), var(--pink));
+  transition: filter .15s; white-space: nowrap;
+}
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-primary:disabled { opacity: .45; pointer-events: none; }
+
+.btn-ghost {
+  border: 1px solid var(--border); background: transparent; color: var(--text2);
+  border-radius: 10px; padding: 9px 16px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  transition: border-color .15s, color .15s; white-space: nowrap;
+}
+.btn-ghost:hover { border-color: var(--violet); color: var(--violet); }
+
+.input-sm {
+  padding: 9px 11px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+  font-size: 13px; outline: none; width: 100%;
+}
+.input-sm:focus { border-color: var(--violet); box-shadow: 0 0 0 3px var(--violet-soft); }.th {
+  text-align: left; font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text3); padding: 12px 16px;
+  border-bottom: 1px solid var(--border); font-weight: 700; white-space: nowrap;
+}
+.th-right { text-align: right; }
+
+.td { padding: 13px 16px; border-bottom: 1px solid var(--border); }
+
+.tr-base:hover { background: var(--surface2); }
+
+/* ── Inline spinner (button loading) ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  opacity: .9;
+  animation: spin .6s linear infinite;
+  vertical-align: middle;
+}
+
+/* ── Skeleton / loading placeholders ── */
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .45; }
+}
+@keyframes skeletonShimmer {
+  100% { transform: translateX(100%); }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface2);
+  border-radius: 8px;
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(150,130,190,.32) 50%, transparent 100%);
+  animation: skeletonShimmer 1.3s ease-in-out infinite;
+}
