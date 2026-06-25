@@ -248,9 +248,9 @@ KPIs del mes: reviews y reportes.
 - `reportesDelMes`: reportes creados en el período
 - `reportesConFalloContraCliente`: reportes resueltos `EnContra` donde el reportado es un `rider`
 - `reportesConFalloContraTrabajador`: reportes resueltos `EnContra` donde el reportado es un `driver`
-- `tasaReportessobreTrabajos`: reportes del mes / trabajos del mes (calculado en Analytics cruzando con Driver; Feedback devuelve el numerador)
+- `tasaReportessobreTrabajos`: reportes del mes / trabajos del mes (calculado por Analytics cruzando FeedbackApp con Driver)
 
-> **Nota de implementación:** `tasaReportessobreTrabajos` lo calcula Analytics cruzando este dato con el summary de Driver. Feedback solo devuelve `reportesDelMes` como insumo.
+> **Nota de implementación:** El campo `tasaReportessobreTrabajos` lo calcula Analytics en `feedback.service.ts` como `reportesDelMes / driver.jobs.creados`. FeedbackApp solo devuelve `reportesDelMes` como insumo. DriverApp devuelve los trabajos creados filtrados por el mismo período.
 
 ---
 

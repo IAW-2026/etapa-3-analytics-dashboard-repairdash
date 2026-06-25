@@ -51,7 +51,7 @@ export function mapFeedbackData(responses: FeedbackClientResponses): FeedbackDat
     reportesDelMes: num(summary?.reportesDelMes, { service, endpoint: 'summary', path: 'reportesDelMes' }),
     reportesContraCliente: num(summary?.reportesConFalloContraCliente, { service, endpoint: 'summary', path: 'reportesConFalloContraCliente' }),
     reportesContraTrabajador: num(summary?.reportesConFalloContraTrabajador, { service, endpoint: 'summary', path: 'reportesConFalloContraTrabajador' }),
-    tasaReportes: num(summary?.tasaReportessobreTrabajos, { service, endpoint: 'summary', path: 'tasaReportessobreTrabajos' }),
+    tasaReportes: null,
     ratingsDistribution,
     calificacionPromedio: weightedAverage(ratingsDistribution),
     reportsPorEstado: recordOfNumbers(breakdown?.porEstado, { service, endpoint: 'reports-breakdown', path: 'porEstado' }),
